@@ -21,6 +21,6 @@ RUN DJANGO_DEBUG=0 DJANGO_SECRET_KEY=collectstatic-only \
     python manage.py collectstatic --noinput
 
 # Railway volumes are mounted as root, so the app runs as root to be able to
-# write uploads there.
-EXPOSE 8000
+# write uploads there. No EXPOSE: the app listens on $PORT, which Railway sets;
+# a fixed EXPOSE port can make Railway route the domain to the wrong port.
 CMD ["./docker-entrypoint.sh"]

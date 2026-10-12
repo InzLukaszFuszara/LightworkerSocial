@@ -157,6 +157,14 @@ Optional variables:
 
 Uploaded chat images are never public: they are only served to members of the conversation.
 
+**Troubleshooting a 502 ("Application failed to respond")** when the deploy log shows
+`Listening at: http://[::]:8080`:
+
+- Settings → Networking → the public domain must point to the port from the log (the `PORT`
+  Railway sets, usually `8080`). Click the domain, change the port, and save.
+- No `GET …` lines in the deploy log means requests do not reach gunicorn – it is the port.
+  Lines with status 400 mean the host is not allowed: add it to `DJANGO_ALLOWED_HOSTS`.
+
 Run the production image locally:
 
 ```bash
