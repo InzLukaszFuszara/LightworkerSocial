@@ -1,0 +1,15 @@
+.git
+.gitignore
+.venv
+venv
+__pycache__/
+*.py[cod]
+db.sqlite3
+media/
+staticfiles/
+features/
+behave.ini
+requirements-dev.txt
+.env
+Dockerfile
+.dockerignore

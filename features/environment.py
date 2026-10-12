@@ -4,6 +4,7 @@ import os
 import shutil
 import tempfile
 
+from django.db import connections
 from django.test.utils import override_settings
 
 # Playwright's sync API runs an event loop in the main thread; Django would
@@ -51,6 +52,11 @@ def after_scenario(context, scenario):
     if context.browser:
         context.page.close()
         context.browser.close()
+        # Steps of browser scenarios run while Playwright's event loop is
+        # active, so Django keeps their database connections in a separate
+        # context. Close them here, before the loop stops, or PostgreSQL
+        # cannot drop the test database at the end of the run.
+        connections.close_all()
         context.playwright.stop()
         context.browser = None
 

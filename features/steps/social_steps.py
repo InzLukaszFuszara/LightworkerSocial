@@ -512,3 +512,8 @@ def step_lightbox_text(context, text):
 @then("the lightbox should be hidden")
 def step_lightbox_hidden(context):
     context.page.wait_for_selector("#lightbox", state="hidden", timeout=3000)
+
+
+@when("the healthcheck is requested")
+def step_healthcheck(context):
+    context.response = client(context).get(reverse("healthz"))

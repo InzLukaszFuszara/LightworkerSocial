@@ -88,6 +88,63 @@ python manage.py runserver
 
 Accounts created with `createsuperuser` or in the admin panel are active immediately.
 
+## Deployment on Railway
+
+The repository contains everything Railway needs: a `Dockerfile` (Railway always builds with it
+when it is present), `gunicorn.conf.py`, WhiteNoise for static files and psycopg 3 for PostgreSQL.
+
+1. **New project** → *Deploy from GitHub repo* → choose this repository.
+2. **Add PostgreSQL** (*+ New → Database → PostgreSQL*).
+3. In the web service → **Variables**, add:
+
+   | Variable | Value |
+   |----------|-------|
+   | `DATABASE_URL` | `${{Postgres.DATABASE_URL}}` (reference to the database service) |
+   | `DJANGO_SECRET_KEY` | a long random string, e.g. `python -c "import secrets; print(secrets.token_urlsafe(50))"` |
+   | `EMAIL_HOST`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `DEFAULT_FROM_EMAIL` | SMTP for activation e-mails (see above) |
+
+4. **Add a volume** to the web service (*right click → Attach volume*), mount path `/data`.
+   Uploaded images are stored in `$RAILWAY_VOLUME_MOUNT_PATH/media`; without a volume they are lost
+   on every deploy.
+5. **Settings → Networking → Generate domain.** `RAILWAY_PUBLIC_DOMAIN` is added to `ALLOWED_HOSTS`
+   and `CSRF_TRUSTED_ORIGINS` automatically; for a custom domain also set `DJANGO_ALLOWED_HOSTS` and
+   `DJANGO_CSRF_TRUSTED_ORIGINS` (e.g. `https://example.com`).
+6. **Settings → Deploy → Healthcheck path:** `/healthz/` (checks the app and the database).
+7. Create an administrator once: `railway ssh` (or *Shell* in the dashboard) →
+   `python manage.py createsuperuser`, then add categories in `/admin/`.
+
+What happens on deploy:
+
+- **Build:** `pip install -r requirements.txt` and `collectstatic` (hashed, compressed files
+  served by WhiteNoise with long-lived caching).
+- **Start** (`docker-entrypoint.sh`): `python manage.py migrate`, then gunicorn on `$PORT`
+  (`gthread` workers – the messenger polls with many short requests).
+  To run migrations as Railway's *pre-deploy command* instead, set it to
+  `python manage.py migrate --noinput` and add `RUN_MIGRATIONS=0`.
+- **Production mode** is switched on automatically on Railway (`RAILWAY_ENVIRONMENT_NAME` is set):
+  `DEBUG` off, HTTPS redirect behind Railway's proxy (except `/healthz/`), secure cookies,
+  errors logged to the deploy logs.
+
+Optional variables:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `WEB_CONCURRENCY` / `GUNICORN_THREADS` | `2` / `4` | gunicorn workers and threads per worker |
+| `DJANGO_SECURE_HSTS_SECONDS` | `0` | enable HSTS once HTTPS works on all domains (e.g. `31536000`) |
+| `DJANGO_SERVE_MEDIA` | `1` | Django serves uploaded post images; set `0` if a CDN/S3 serves `/media/` |
+| `DJANGO_DB_CONN_MAX_AGE` | `60` | seconds a database connection is reused |
+| `DJANGO_LOG_LEVEL` | `INFO` | log level |
+
+Uploaded chat images are never public: they are only served to members of the conversation.
+
+Run the production image locally:
+
+```bash
+docker build -t lightworker .
+docker run -p 8000:8000 -e DJANGO_DEBUG=0 -e DJANGO_SECRET_KEY=change-me \
+  -e DJANGO_SECURE_SSL_REDIRECT=0 -e DATABASE_URL=postgresql://user:pass@host:5432/db lightworker
+```
+
 ## BDD tests
 
 Gherkin scenarios live in the `features/` directory and step definitions in `features/steps/`.
@@ -104,6 +161,7 @@ Scenarios tagged `@browser` (`lightbox.feature`, `chat_browser.feature`) run in 
 | File | Scope |
 |------|-------|
 | `authentication.feature` | sign-up, login with e-mail and password, logout |
+| `deployment.feature` | healthcheck endpoint |
 | `registration.feature` | activation e-mail, activation link (expiry, reuse, tampering), resending, SMTP delivery and configuration |
 | `posting.feature` | adding posts, 2000-character limit, images → WebP, 5 MiB limit, formats |
 | `wall.feature` | wall, 3 tiles per row, 250 characters, thumbnail, category link, lightbox |
@@ -128,7 +186,7 @@ python manage.py compilemessages
 ## Project structure
 
 ```
-config/     settings (incl. SMTP configuration in email.py) and root URLs
+config/     settings (SMTP in email.py, database in database.py), root URLs, healthcheck
 accounts/   user model (e-mail login), sign-up with e-mail activation, profile, profile list
 posts/      categories, posts, images (WebP conversion), hashtags, Markdown, wall, forum
 chat/       messenger: presence, direct and group conversations, rooms, messages, join requests
