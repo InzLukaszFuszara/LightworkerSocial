@@ -1,9 +1,12 @@
 """Step definitions for e-mail confirmation of new accounts."""
 
+import base64
 import re
 import socket
+import threading
 import time
 from email import message_from_bytes, policy
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from unittest import mock
 
 from behave import given, then, when
@@ -14,7 +17,7 @@ from django.urls import reverse
 from django.utils import timezone
 from helpers import soup
 
-from config.email import email_settings
+from config.email import MAILGUN_BACKEND, email_settings
 
 User = get_user_model()
 ACTIVATION_LINK = re.compile(r"https?://[^\s\"'<>]+/accounts/activate/[^\s\"'<>/]+/")
@@ -250,10 +253,83 @@ def step_env(context, variables):
 @then('the e-mail backend should be "{name:Q}"')
 def step_backend(context, name):
     backend = context.email_config["EMAIL_BACKEND"]
-    assert backend == f"django.core.mail.backends.{name}.EmailBackend", backend
+    expected = MAILGUN_BACKEND if name == "mailgun" else f"django.core.mail.backends.{name}.EmailBackend"
+    assert backend == expected, backend
 
 
 @then('the e-mail setting "{setting:Q}" should be "{value:Q}"')
 def step_email_setting(context, setting, value):
     actual = str(context.email_config[setting])
     assert actual == value, actual
+
+
+# --------------------------------------------------------------------------
+# Mailgun
+# --------------------------------------------------------------------------
+
+
+class _FakeMailgunHandler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        body = self.rfile.read(int(self.headers["Content-Length"]))
+        self.server.received.append((self.path, dict(self.headers), body))
+        self.send_response(self.server.status)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        self.wfile.write(b'{"id": "<test@mailgun>", "message": "Queued. Thank you."}')
+
+    def log_message(self, *args):
+        pass
+
+
+def _start_fake_mailgun(context, status):
+    server = ThreadingHTTPServer(("127.0.0.1", 0), _FakeMailgunHandler)
+    server.received = []
+    server.status = status
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    context.cleanups.append(server.server_close)
+    context.cleanups.append(server.shutdown)
+    context.mailgun = server
+    _use_settings(
+        context,
+        EMAIL_BACKEND=MAILGUN_BACKEND,
+        MAILGUN_API_KEY="key-test",
+        MAILGUN_DOMAIN="mg.example.com",
+        MAILGUN_API_URL=f"http://127.0.0.1:{server.server_address[1]}",
+        EMAIL_TIMEOUT=5,
+    )
+
+
+@given("a test Mailgun API is running")
+def step_mailgun_server(context):
+    _start_fake_mailgun(context, 200)
+
+
+@given("the Mailgun API rejects messages")
+def step_mailgun_rejects(context):
+    _start_fake_mailgun(context, 401)
+
+
+@then('the Mailgun API should have received an e-mail for "{email:Q}"')
+def step_mailgun_received(context, email):
+    received = context.mailgun.received
+    assert len(received) == 1, received
+    path, headers, body = received[0]
+    assert path == "/v3/mg.example.com/messages.mime", path
+    expected = "Basic " + base64.b64encode(b"api:key-test").decode()
+    assert headers.get("Authorization") == expected
+    content_type = headers["Content-Type"]
+    form = message_from_bytes(
+        f"Content-Type: {content_type}\r\n\r\n".encode() + body, policy=policy.default
+    )
+    parts = {part.get_param("name", header="content-disposition"): part for part in form.iter_parts()}
+    assert parts["to"].get_payload(decode=True).decode() == email
+    mime = parts["message"].get_payload(decode=True) or parts["message"].get_payload()[0].as_bytes()
+    context.mailgun_message = message_from_bytes(mime, policy=policy.default)
+
+
+@then("the Mailgun e-mail should contain an activation link")
+def step_mailgun_link(context):
+    message = context.mailgun_message
+    text = message.get_body(preferencelist=("plain",)).get_content()
+    assert ACTIVATION_LINK.search(text), text
+    assert message.get_body(preferencelist=("html",)) is not None
