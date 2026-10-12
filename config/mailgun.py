@@ -90,5 +90,12 @@ class EmailBackend(BaseEmailBackend):
                 response.read()
         except urllib.error.HTTPError as error:
             detail = error.read().decode("utf-8", "replace")[:500]
-            raise MailgunError(f"Mailgun returned HTTP {error.code}: {detail}") from error
+            hint = ""
+            if error.code == 401:
+                hint = (
+                    f" – check MAILGUN_API_KEY (private API key or a sending key for "
+                    f"{self.domain}) and MAILGUN_REGION: {self.api_url} is used, EU domains "
+                    "need MAILGUN_REGION=eu"
+                )
+            raise MailgunError(f"Mailgun returned HTTP {error.code}: {detail}{hint}") from error
         return True
