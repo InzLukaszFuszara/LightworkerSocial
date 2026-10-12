@@ -7,10 +7,10 @@ from .models import Category, Hashtag, Post, PostImage
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("name", "name_en", "slug", "position")
+    list_display = ("name", "slug", "position")
     list_editable = ("position",)
     prepopulated_fields = {"slug": ("name",)}
-    search_fields = ("name", "name_en")
+    search_fields = ("name",)
 
 
 class PostImageInline(admin.TabularInline):

@@ -2,7 +2,7 @@
   <header class="post-meta">
     <a class="author" href="{{ post.author.get_absolute_url }}">{{ post.author.display_name }}</a>
     · <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"DATETIME_FORMAT" }}</time>
-    · <a class="category-link" href="{{ post.category.get_absolute_url }}">{{ post.category.display_name }}</a>
+    · <a class="category-link" href="{{ post.category.get_absolute_url }}">{{ post.category.name }}</a>
   </header>
   <div class="post-content markdown">{{ post.rendered_content }}</div>
   {% if post.images.all %}

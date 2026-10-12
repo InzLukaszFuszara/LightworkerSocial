@@ -3,7 +3,7 @@ Feature: Polish and English language versions
   I want to use the site in Polish or English
 
   Background:
-    Given a category "Medytacja" with English name "Meditation" exists
+    Given a category "Medytacja" exists
 
   Scenario: Polish is the default language
     When I visit the forum
@@ -14,7 +14,7 @@ Feature: Polish and English language versions
     When I switch the language to "en"
     And I visit the forum
     Then the page should contain "Last post"
-    And I should see the forum topic "Meditation"
+    And I should see the forum topic "Medytacja"
 
   Scenario: Switching back to Polish
     When I switch the language to "en"

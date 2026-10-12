@@ -11,9 +11,9 @@ from PIL import Image, ImageDraw
 from posts.models import Category, Post, PostImage
 
 CATEGORIES = [
-    ("Medytacja", "Meditation", "medytacja"),
-    ("Uzdrawianie", "Healing", "uzdrawianie"),
-    ("Natura", "Nature", "natura"),
+    ("Medytacja", "medytacja"),
+    ("Uzdrawianie", "uzdrawianie"),
+    ("Natura", "natura"),
 ]
 
 TEXTS = [
@@ -44,9 +44,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         User = get_user_model()
         cats = []
-        for name, name_en, slug in CATEGORIES:
+        for name, slug in CATEGORIES:
             cat, _ = Category.objects.get_or_create(
-                slug=slug, defaults={"name": name, "name_en": name_en}
+                slug=slug, defaults={"name": name}
             )
             cats.append(cat)
         users = []

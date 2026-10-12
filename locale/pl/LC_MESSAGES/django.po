@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-12 15:06+0200\n"
+"POT-Creation-Date: 2026-10-12 15:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,7 +106,7 @@ msgstr "Wpisy"
 msgid "Content"
 msgstr "Treść"
 
-#: posts/forms.py:46 posts/models.py:90
+#: posts/forms.py:46 posts/models.py:74
 msgid "Markdown is supported. Use #hashtags to tag your post."
 msgstr "Obsługiwany jest Markdown. Używaj #hashtagów, aby oznaczyć wpis."
 
@@ -154,83 +154,72 @@ msgstr ""
 "Plik %(name)s ma nieobsługiwany format. Dozwolone formaty: JPG, PNG, GIF, "
 "WebP."
 
-#: posts/models.py:18
-msgid "name (Polish)"
-msgstr "nazwa (polska)"
-
-#: posts/models.py:19
-msgid "name (English)"
-msgstr "nazwa (angielska)"
-
-#: posts/models.py:20
-msgid "slug"
-msgstr "slug (adres)"
-
-#: posts/models.py:21
-msgid "description (Polish)"
-msgstr "opis (polski)"
-
-#: posts/models.py:22
-msgid "description (English)"
-msgstr "opis (angielski)"
-
-#: posts/models.py:23 posts/models.py:146
-msgid "position"
-msgstr "kolejność"
-
-#: posts/models.py:26 posts/models.py:85
-msgid "category"
-msgstr "kategoria"
-
-#: posts/models.py:27
-msgid "categories"
-msgstr "kategorie"
-
-#: posts/models.py:51
+#: posts/models.py:17 posts/models.py:35
 msgid "name"
 msgstr "nazwa"
 
-#: posts/models.py:54
+#: posts/models.py:18
+msgid "slug"
+msgstr "slug (adres)"
+
+#: posts/models.py:19
+#| msgid "description (Polish)"
+msgid "description"
+msgstr "opis"
+
+#: posts/models.py:20 posts/models.py:130
+msgid "position"
+msgstr "kolejność"
+
+#: posts/models.py:23 posts/models.py:69
+msgid "category"
+msgstr "kategoria"
+
+#: posts/models.py:24
+msgid "categories"
+msgstr "kategorie"
+
+#: posts/models.py:38
 msgid "hashtag"
 msgstr "hashtag"
 
-#: posts/models.py:55 posts/models.py:93
+#: posts/models.py:39 posts/models.py:77
 msgid "hashtags"
 msgstr "hashtagi"
 
-#: posts/models.py:79
+#: posts/models.py:63
 msgid "author"
 msgstr "autor"
 
-#: posts/models.py:88
+#: posts/models.py:72
 msgid "content"
 msgstr "treść"
 
-#: posts/models.py:95
+#: posts/models.py:79
 msgid "created at"
 msgstr "data dodania"
 
-#: posts/models.py:96
+#: posts/models.py:80
 msgid "updated at"
 msgstr "data modyfikacji"
 
-#: posts/models.py:101 posts/models.py:140
+#: posts/models.py:85 posts/models.py:124
 msgid "post"
 msgstr "wpis"
 
-#: posts/models.py:102
+#: posts/models.py:86
 msgid "posts"
 msgstr "wpisy"
 
-#: posts/models.py:143 posts/models.py:149
+#: posts/models.py:127 posts/models.py:133
 msgid "image"
 msgstr "zdjęcie"
 
-#: posts/models.py:145
+#: posts/models.py:129
 msgid "thumbnail"
 msgstr "miniaturka"
 
-#: posts/models.py:150
+#: posts/models.py:134
 msgid "images"
 msgstr "zdjęcia"
 
@@ -461,3 +450,12 @@ msgstr "Tablica"
 #: templates/posts/wall.html:20
 msgid "This wall is still empty."
 msgstr "Ta tablica jest jeszcze pusta."
+
+#~ msgid "name (Polish)"
+#~ msgstr "nazwa (polska)"
+
+#~ msgid "name (English)"
+#~ msgstr "nazwa (angielska)"
+
+#~ msgid "description (English)"
+#~ msgstr "opis (angielski)"

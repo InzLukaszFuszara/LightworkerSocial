@@ -5,7 +5,6 @@ from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.functional import cached_property
-from django.utils.translation import get_language
 from django.utils.translation import gettext_lazy as _
 
 from . import text
@@ -15,11 +14,9 @@ from .images import convert_to_webp, make_thumbnail, validate_image_upload
 class Category(models.Model):
     """A category defined by administrators; shown as a forum topic."""
 
-    name = models.CharField(_("name (Polish)"), max_length=100, unique=True)
-    name_en = models.CharField(_("name (English)"), max_length=100, blank=True)
+    name = models.CharField(_("name"), max_length=100, unique=True)
     slug = models.SlugField(_("slug"), max_length=100, unique=True)
-    description = models.TextField(_("description (Polish)"), blank=True)
-    description_en = models.TextField(_("description (English)"), blank=True)
+    description = models.TextField(_("description"), blank=True)
     position = models.PositiveIntegerField(_("position"), default=0)
 
     class Meta:
@@ -28,20 +25,7 @@ class Category(models.Model):
         ordering = ["position", "name"]
 
     def __str__(self):
-        return self.display_name
-
-    def _localised(self, field):
-        if (get_language() or "").startswith("en"):
-            return getattr(self, f"{field}_en") or getattr(self, field)
-        return getattr(self, field)
-
-    @property
-    def display_name(self):
-        return self._localised("name")
-
-    @property
-    def display_description(self):
-        return self._localised("description")
+        return self.name
 
     def get_absolute_url(self):
         return reverse("posts:forum_topic", kwargs={"slug": self.slug})

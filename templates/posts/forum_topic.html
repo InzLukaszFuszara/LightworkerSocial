@@ -1,10 +1,10 @@
 {% extends "base.html" %}{% load i18n %}
-{% block title %}{{ category.display_name }}{% endblock %}
+{% block title %}{{ category.name }}{% endblock %}
 {% block content %}
-<nav class="breadcrumbs"><a href="{% url 'posts:forum' %}">{% translate "Forum" %}</a> › {{ category.display_name }}</nav>
+<nav class="breadcrumbs"><a href="{% url 'posts:forum' %}">{% translate "Forum" %}</a> › {{ category.name }}</nav>
 <section class="hero">
-  <h1>{{ category.display_name }}</h1>
-  {% if category.display_description %}<p>{{ category.display_description }}</p>{% endif %}
+  <h1>{{ category.name }}</h1>
+  {% if category.description %}<p>{{ category.description }}</p>{% endif %}
 </section>
 {% include "includes/tiles.html" %}
 {% endblock %}

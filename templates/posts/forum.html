@@ -14,8 +14,8 @@
   {% for category in categories %}
     <tr class="forum-topic">
       <td>
-        <a class="topic-title" href="{{ category.get_absolute_url }}">{{ category.display_name }}</a>
-        {% if category.display_description %}<p class="muted">{{ category.display_description }}</p>{% endif %}
+        <a class="topic-title" href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+        {% if category.description %}<p class="muted">{{ category.description }}</p>{% endif %}
       </td>
       <td class="num">{{ category.post_count }}</td>
       <td>{% if category.last_post_at %}<time datetime="{{ category.last_post_at|date:'c' }}">{{ category.last_post_at|date:"SHORT_DATETIME_FORMAT" }}</time>{% else %}—{% endif %}</td>

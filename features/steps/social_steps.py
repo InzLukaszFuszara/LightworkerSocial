@@ -159,13 +159,6 @@ def step_category(context, name):
     )
 
 
-@given('a category "{name:Q}" with English name "{name_en:Q}" exists')
-def step_category_en(context, name, name_en):
-    context.categories[name] = Category.objects.create(
-        name=name, name_en=name_en, slug=name.lower()
-    )
-
-
 @given('"{author:Q}" has posted "{content:Q}" in category "{cat:Q}"')
 def step_has_posted(context, author, content, cat):
     make_post(author, content, cat)
@@ -334,7 +327,7 @@ def step_admin_add_category(context, name, slug):
     post(
         context,
         reverse("admin:posts_category_add"),
-        {"name": name, "slug": slug, "position": 0, "name_en": "", "description": ""},
+        {"name": name, "slug": slug, "position": 0, "description": ""},
     )
     assert context.response.status_code == 302, body(context)
 

@@ -14,7 +14,7 @@
         <p class="tile-excerpt">{{ post.excerpt }}</p>
       </a>
       <footer class="tile-footer">
-        <a class="category-link" href="{{ post.category.get_absolute_url }}">{{ post.category.display_name }}</a>
+        <a class="category-link" href="{{ post.category.get_absolute_url }}">{{ post.category.name }}</a>
         <span class="tile-author">
           <a href="{{ post.author.get_absolute_url }}">{{ post.author.display_name }}</a>
           · <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"SHORT_DATE_FORMAT" }}</time>

@@ -26,7 +26,7 @@ z testami **BDD** (behave + behave-django) oraz wersjami językowymi **polską**
 - **Hashtagi** (`/tags/<hashtag>/`) – wszystkie wpisy wszystkich użytkowników z danym hashtagiem,
   posortowane od najnowszego.
 - **Języki** – polski (domyślny) i angielski; przełącznik PL/EN w nagłówku. Język jest też wybierany
-  automatycznie na podstawie ustawień przeglądarki. Kategorie mają nazwę i opis w obu językach.
+  automatycznie na podstawie ustawień przeglądarki. Nazwa i opis kategorii są wspólne dla wszystkich języków.
 - **Kolorystyka** jasnoniebieska i jasnozielona.
 
 ## Uruchomienie
