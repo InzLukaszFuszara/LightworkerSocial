@@ -1,6 +1,6 @@
 Feature: Confirming the e-mail address after signing up
   As the site owner
-  I want new users to confirm their e-mail address with a link sent over SMTP
+  I want new users to confirm their e-mail address with a link sent by e-mail (SMTP or Mailgun)
   So that every account belongs to a real mailbox
 
   Scenario: Signing up sends an activation e-mail
@@ -102,7 +102,22 @@ Feature: Confirming the e-mail address after signing up
     Then the SMTP server should have received an e-mail for "anna@example.com"
     And the received e-mail should contain an activation link
 
-  Scenario Outline: SMTP is configured with environment variables
+  Scenario: The activation e-mail is delivered through the Mailgun API
+    Given a test Mailgun API is running
+    When I sign up with e-mail "anna@example.com", username "anna" and password "S3cret-pass!"
+    Then I should be redirected to the page "Sprawdź swoją skrzynkę"
+    And the page should not contain "Nie udało się wysłać e-maila aktywacyjnego."
+    And the Mailgun API should have received an e-mail for "anna@example.com"
+    And the Mailgun e-mail should contain an activation link
+
+  Scenario: The user is told when Mailgun rejects the e-mail
+    Given the Mailgun API rejects messages
+    When I sign up with e-mail "anna@example.com", username "anna" and password "S3cret-pass!"
+    Then I should be redirected to the page "Sprawdź swoją skrzynkę"
+    And the page should contain "Nie udało się wysłać e-maila aktywacyjnego."
+    And the account "anna@example.com" should be waiting for activation
+
+  Scenario Outline: SMTP and Mailgun are configured with environment variables
     Given the environment variables "<variables>"
     Then the e-mail backend should be "<backend>"
     And the e-mail setting "<setting>" should be "<value>"
@@ -116,3 +131,7 @@ Feature: Confirming the e-mail address after signing up
       | EMAIL_HOST=smtp.example.com;EMAIL_PORT=2525;EMAIL_USE_TLS=0 | smtp    | EMAIL_PORT    | 2525                  |
       | EMAIL_HOST=smtp.example.com;EMAIL_HOST_USER=bot             | smtp    | EMAIL_HOST_USER | bot                 |
       | DEFAULT_FROM_EMAIL=hello@example.com;DEBUG=1                | console | DEFAULT_FROM_EMAIL | hello@example.com |
+      | MAILGUN_API_KEY=key;MAILGUN_DOMAIN=mg.example.com           | mailgun | MAILGUN_API_URL | https://api.mailgun.net |
+      | MAILGUN_API_KEY=key;MAILGUN_DOMAIN=mg.example.com;MAILGUN_REGION=eu | mailgun | MAILGUN_API_URL | https://api.eu.mailgun.net |
+      | MAILGUN_API_KEY=key;MAILGUN_DOMAIN=mg.example.com;EMAIL_HOST=smtp.example.com | mailgun | MAILGUN_DOMAIN | mg.example.com |
+      | MAILGUN_API_KEY=key;EMAIL_HOST=smtp.example.com             | smtp    | EMAIL_HOST    | smtp.example.com      |
