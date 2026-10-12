@@ -1,96 +1,88 @@
 # Lightworker Social
 
-Aplikacja społecznościowa w **Python / Django** (backend + frontend renderowany po stronie serwera)
-z testami **BDD** (behave + behave-django) oraz wersjami językowymi **polską** i **angielską**.
+A social media application built with **Python / Django** (backend + server-rendered frontend),
+with **BDD** tests (behave + behave-django) and **Polish** and **English** language versions.
 
-## Funkcje
+## Features
 
-- **Konta** – rejestracja oraz logowanie przez **e-mail i hasło** (`accounts.User`, `USERNAME_FIELD = "email"`).
-  Nazwa użytkownika służy tylko jako publiczny adres profilu (`/u/<nazwa>/`).
-- **Profil z tablicą użytkownika** – nagłówek profilu (nazwa, „o mnie”, liczba wpisów) i tablica wpisów
-  w postaci **kafelków, po 3 w wierszu** (na węższych ekranach 2 / 1). Każdy kafelek zawiera:
-  - pierwsze **250 znaków** wpisu (tekst bez znaczników Markdown),
-  - **miniaturkę pierwszego zdjęcia** wpisu (WebP 480×480),
-  - **link do kategorii** wpisu (tematu forum),
-  - po kliknięciu otwiera **lightbox** z pełną treścią i wszystkimi zdjęciami
-    (bez JavaScriptu link prowadzi do strony wpisu).
-- **Dodawanie wpisów** (`/posts/new/`):
-  - maks. **2000 znaków** (walidacja w formularzu i w modelu, licznik znaków na żywo),
-  - **wiele zdjęć**, każde maks. **5 MiB**, formaty **JPG, PNG, GIF, WebP** – wszystkie są
-    **konwertowane do WebP** (animowane GIF-y pozostają animowane),
-  - obowiązkowa **kategoria** zdefiniowana przez administratora w panelu `/admin/`,
-  - obsługa **Markdown** (bezpiecznie sanityzowany przez *bleach*),
-  - obsługa **#hashtagów** (również z polskimi znakami, np. `#spokój`).
-- **Forum** (`/forum/`) – kategorie jako tematy (z liczbą wpisów i datą ostatniego wpisu);
-  po kliknięciu tematu wyświetlają się kafelki z wpisami z tablic wszystkich użytkowników.
-- **Hashtagi** (`/tags/<hashtag>/`) – wszystkie wpisy wszystkich użytkowników z danym hashtagiem,
-  posortowane od najnowszego.
-- **Języki** – polski (domyślny) i angielski; przełącznik PL/EN w nagłówku. Język jest też wybierany
-  automatycznie na podstawie ustawień przeglądarki. Nazwa i opis kategorii są wspólne dla wszystkich języków.
-- **Kolorystyka** jasnoniebieska i jasnozielona.
+- **Accounts** – sign-up and login with **e-mail and password** (`accounts.User`, `USERNAME_FIELD = "email"`).
+  The username is only used as the public address of the profile (`/u/<username>/`).
+- **User profile with a wall** – a profile header (name, "about me", number of posts) and a wall of posts
+  shown as **tiles, 3 per row** (2 / 1 on narrower screens). Each tile contains:
+  - the first **250 characters** of the post (plain text without Markdown markup),
+  - a **thumbnail of the first image** of the post (WebP 480×480),
+  - a **link to the post's category** (forum topic),
+  - when clicked, it opens a **lightbox** with the full content and all images
+    (without JavaScript the link leads to the post page).
+- **Adding posts** (`/posts/new/`):
+  - max. **2000 characters** (validated in the form and the model, live character counter),
+  - **multiple images**, each max. **5 MiB**, formats **JPG, PNG, GIF, WebP** – all of them are
+    **converted to WebP** (animated GIFs stay animated),
+  - a required **category** defined by an administrator in the `/admin/` panel,
+  - **Markdown** support (safely sanitised with *bleach*),
+  - **#hashtag** support (including Polish characters, e.g. `#spokój`).
+- **Forum** (`/forum/`) – categories shown as topics (with the number of posts and the date of the last post);
+  clicking a topic shows tiles with posts from the walls of all users.
+- **Hashtags** (`/tags/<hashtag>/`) – all posts of all users with the given hashtag,
+  sorted newest first.
+- **Languages** – Polish (default) and English; a PL/EN switcher in the header. The language is also
+  chosen automatically from the browser settings. Category names and descriptions are shared by all languages.
+- **Colour scheme** in light blue and light green.
 
-## Uruchomienie
+## Getting started
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
 python manage.py migrate
-python manage.py createsuperuser        # logowanie e-mailem
-python manage.py seed_demo              # (opcjonalnie) dane demo, hasło: demo-pass-123
+python manage.py createsuperuser        # log in with your e-mail
+python manage.py seed_demo              # (optional) demo data, password: demo-pass-123
 python manage.py runserver
 ```
 
-Następnie w panelu `http://127.0.0.1:8000/admin/` dodaj kategorie (Wpisy → Kategorie).
+Then add categories in the admin panel at `http://127.0.0.1:8000/admin/` (Posts → Categories).
 
-Zmienne środowiskowe dla produkcji: `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=0`,
+Environment variables for production: `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=0`,
 `DJANGO_ALLOWED_HOSTS`, `DJANGO_DB_PATH`, `DJANGO_MEDIA_ROOT`.
 
-## Testy BDD
+## BDD tests
 
-Scenariusze Gherkin znajdują się w katalogu `features/`, a definicje kroków w `features/steps/`.
+Gherkin scenarios live in the `features/` directory and step definitions in `features/steps/`.
 
 ```bash
-python manage.py behave                 # wszystkie scenariusze
-python manage.py behave --tags=-browser # bez testu w przeglądarce
+python manage.py behave                 # all scenarios
+python manage.py behave --tags=-browser # without the browser test
 ```
 
-Scenariusz `features/lightbox.feature` (`@browser`) sprawdza lightbox w prawdziwej przeglądarce
-(Playwright + Chromium: `playwright install chromium` lub zmienna `CHROMIUM_PATH`).
+The `features/lightbox.feature` scenario (`@browser`) checks the lightbox in a real browser
+(Playwright + Chromium: `playwright install chromium` or the `CHROMIUM_PATH` variable).
 
-| Plik | Zakres |
-|------|--------|
-| `authentication.feature` | rejestracja, logowanie e-mailem i hasłem, wylogowanie |
-| `posting.feature` | dodawanie wpisów, limit 2000 znaków, zdjęcia → WebP, limit 5 MiB, formaty |
-| `wall.feature` | tablica, kafelki 3 w wierszu, 250 znaków, miniaturka, link do kategorii, lightbox |
-| `forum.feature` | forum, tematy = kategorie, kategorie z panelu administracyjnego |
-| `hashtags.feature` | linki hashtagów, strona hashtagu sortowana wg daty |
-| `markdown.feature` | renderowanie Markdown i sanityzacja HTML |
-| `i18n.feature` | wersja polska i angielska |
-| `lightbox.feature` | lightbox w przeglądarce |
+| File | Scope |
+|------|-------|
+| `authentication.feature` | sign-up, login with e-mail and password, logout |
+| `posting.feature` | adding posts, 2000-character limit, images → WebP, 5 MiB limit, formats |
+| `wall.feature` | wall, 3 tiles per row, 250 characters, thumbnail, category link, lightbox |
+| `forum.feature` | forum, topics = categories, categories from the admin panel |
+| `hashtags.feature` | hashtag links, hashtag page sorted by date |
+| `markdown.feature` | Markdown rendering and HTML sanitisation |
+| `i18n.feature` | Polish and English versions |
+| `lightbox.feature` | lightbox in the browser |
 
-## Tłumaczenia
+## Translations
 
 ```bash
 python manage.py makemessages -l pl -l en --ignore=features
 python manage.py compilemessages
 ```
 
-## Struktura
+## Project structure
 
 ```
-config/     ustawienia i główne URL-e
-accounts/   model użytkownika (logowanie e-mailem), rejestracja, profil, lista profili
-posts/      kategorie, wpisy, zdjęcia (konwersja WebP), hashtagi, Markdown, tablica, forum
-templates/  szablony HTML
-static/     CSS (motyw jasnoniebieski/jasnozielony) i JS (lightbox, licznik znaków)
-locale/     tłumaczenia (pl, en)
-features/   testy BDD
+config/     settings and root URLs
+accounts/   user model (e-mail login), sign-up, profile, profile list
+posts/      categories, posts, images (WebP conversion), hashtags, Markdown, wall, forum
+templates/  HTML templates
+static/     CSS (light blue / light green theme) and JS (lightbox, character counter)
+locale/     translations (pl, en)
+features/   BDD tests
 ```
-
----
-
-**English:** Django social app with user profiles and walls (3 tiles per row: 250-char excerpt,
-first image thumbnail, category link, lightbox with the full post), posts up to 2000 characters
-with Markdown, #hashtags and multiple images (≤ 5 MiB, JPG/PNG/GIF/WebP converted to WebP),
-admin-defined categories shown as forum topics, hashtag pages sorted by date, e-mail + password
-login, Polish & English UI. Run `python manage.py behave` for the BDD suite.
