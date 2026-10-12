@@ -171,7 +171,7 @@ LOGGING = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# E-mail via SMTP – see config/email.py for the environment variables.
+# E-mail via Mailgun or SMTP – see config/email.py for the environment variables.
 _email = email_settings(os.environ, debug=DEBUG)
 EMAIL_BACKEND = _email["EMAIL_BACKEND"]
 EMAIL_HOST = _email["EMAIL_HOST"]
@@ -181,6 +181,9 @@ EMAIL_HOST_PASSWORD = _email["EMAIL_HOST_PASSWORD"]
 EMAIL_USE_TLS = _email["EMAIL_USE_TLS"]
 EMAIL_USE_SSL = _email["EMAIL_USE_SSL"]
 EMAIL_TIMEOUT = _email["EMAIL_TIMEOUT"]
+MAILGUN_API_KEY = _email["MAILGUN_API_KEY"]
+MAILGUN_DOMAIN = _email["MAILGUN_DOMAIN"]
+MAILGUN_API_URL = _email["MAILGUN_API_URL"]
 DEFAULT_FROM_EMAIL = _email["DEFAULT_FROM_EMAIL"]
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 ACCOUNT_ACTIVATION_DAYS = int(os.environ.get("ACCOUNT_ACTIVATION_DAYS", "3"))

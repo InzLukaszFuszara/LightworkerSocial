@@ -86,6 +86,26 @@ export DEFAULT_FROM_EMAIL="Lightworker Social <bot@example.com>"
 python manage.py runserver
 ```
 
+### E-mail (Mailgun)
+
+E-mails can also be sent through the [Mailgun](https://www.mailgun.com/) HTTP API instead of SMTP
+(`config/mailgun.py`, no extra dependencies). When both `MAILGUN_API_KEY` and `MAILGUN_DOMAIN` are
+set, Mailgun is used and the SMTP settings are ignored. `DEFAULT_FROM_EMAIL` should use an address
+from the Mailgun sending domain.
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MAILGUN_API_KEY` | – | Mailgun private API key (sending key) |
+| `MAILGUN_DOMAIN` | – | Mailgun sending domain, e.g. `mg.example.com` |
+| `MAILGUN_REGION` | `us` | `us` or `eu` – the region your domain was created in |
+| `MAILGUN_API_URL` | depends on the region | override the API base URL (e.g. for a proxy) |
+
+```bash
+export MAILGUN_API_KEY=key-... MAILGUN_DOMAIN=mg.example.com MAILGUN_REGION=eu
+export DEFAULT_FROM_EMAIL="Lightworker Social <no-reply@mg.example.com>"
+python manage.py runserver
+```
+
 Accounts created with `createsuperuser` or in the admin panel are active immediately.
 
 ## Deployment on Railway
@@ -101,7 +121,7 @@ when it is present), `gunicorn.conf.py`, WhiteNoise for static files and psycopg
    |----------|-------|
    | `DATABASE_URL` | `${{Postgres.DATABASE_URL}}` (reference to the database service) |
    | `DJANGO_SECRET_KEY` | a long random string, e.g. `python -c "import secrets; print(secrets.token_urlsafe(50))"` |
-   | `EMAIL_HOST`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `DEFAULT_FROM_EMAIL` | SMTP for activation e-mails (see above) |
+   | `EMAIL_HOST`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `DEFAULT_FROM_EMAIL` | SMTP for activation e-mails (see above) – or `MAILGUN_API_KEY`, `MAILGUN_DOMAIN` (and `MAILGUN_REGION=eu`) for Mailgun |
 
 4. **Add a volume** to the web service (*right click → Attach volume*), mount path `/data`.
    Uploaded images are stored in `$RAILWAY_VOLUME_MOUNT_PATH/media`; without a volume they are lost
@@ -162,7 +182,7 @@ Scenarios tagged `@browser` (`lightbox.feature`, `chat_browser.feature`) run in 
 |------|-------|
 | `authentication.feature` | sign-up, login with e-mail and password, logout |
 | `deployment.feature` | healthcheck endpoint |
-| `registration.feature` | activation e-mail, activation link (expiry, reuse, tampering), resending, SMTP delivery and configuration |
+| `registration.feature` | activation e-mail, activation link (expiry, reuse, tampering), resending, SMTP and Mailgun delivery and configuration |
 | `posting.feature` | adding posts, 2000-character limit, images → WebP, 5 MiB limit, formats |
 | `wall.feature` | wall, 3 tiles per row, 250 characters, thumbnail, category link, lightbox |
 | `forum.feature` | forum, topics = categories, categories from the admin panel |
@@ -186,7 +206,8 @@ python manage.py compilemessages
 ## Project structure
 
 ```
-config/     settings (SMTP in email.py, database in database.py), root URLs, healthcheck
+config/     settings (e-mail in email.py, Mailgun backend in mailgun.py, database in database.py),
+            root URLs, healthcheck
 accounts/   user model (e-mail login), sign-up with e-mail activation, profile, profile list
 posts/      categories, posts, images (WebP conversion), hashtags, Markdown, wall, forum
 chat/       messenger: presence, direct and group conversations, rooms, messages, join requests

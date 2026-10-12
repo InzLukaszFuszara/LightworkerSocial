@@ -1,4 +1,4 @@
-"""E-mail address confirmation: signed activation links sent over SMTP."""
+"""E-mail address confirmation: signed activation links sent by e-mail (SMTP or Mailgun)."""
 
 import logging
 import smtplib
@@ -58,7 +58,7 @@ def can_resend(user):
 
 
 def send_activation_email(request, user):
-    """Send the activation link. Returns ``False`` if the SMTP server failed."""
+    """Send the activation link. Returns ``False`` if the SMTP server or Mailgun failed."""
     url = request.build_absolute_uri(
         reverse("accounts:activate", kwargs={"token": make_token(user)})
     )
