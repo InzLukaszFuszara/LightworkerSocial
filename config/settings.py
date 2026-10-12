@@ -13,6 +13,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .database import database_settings
 from .email import email_settings
+from .log_config import logging_config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -159,15 +160,8 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = env_flag("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", False)
     SECURE_REFERRER_POLICY = "same-origin"
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {"console": {"class": "logging.StreamHandler"}},
-    "root": {"handlers": ["console"], "level": os.environ.get("DJANGO_LOG_LEVEL", "INFO")},
-    "loggers": {
-        "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
-    },
-}
+# INFO to stdout, warnings and errors to stderr (see config/log_config.py).
+LOGGING = logging_config(os.environ.get("DJANGO_LOG_LEVEL", "INFO"))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

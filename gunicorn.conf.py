@@ -3,6 +3,8 @@
 import os
 import socket
 
+from config.log_config import GUNICORN_FORMAT, logging_config
+
 
 def _ipv6_available():
     if not socket.has_ipv6:
@@ -40,3 +42,14 @@ forwarded_allow_ips = "*"
 accesslog = "-"
 errorlog = "-"
 loglevel = os.environ.get("GUNICORN_LOG_LEVEL", "info")
+
+# gunicorn writes its "error" log (which is mostly INFO lines) to stderr, and
+# Railway shows everything on stderr as an error. Route INFO to stdout.
+logconfig_dict = logging_config(
+    loglevel.upper(),
+    loggers={
+        "gunicorn.error": {"level": loglevel.upper(), "propagate": True},
+        "gunicorn.access": {"level": "INFO", "propagate": True},
+    },
+    fmt=GUNICORN_FORMAT,
+)
