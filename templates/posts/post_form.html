@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "New post" %}{% endblock %}
+{% block content %}
+<section class="card form-card">
+  <h1>{% translate "New post" %}</h1>
+  {% if not has_categories %}
+    <p class="message warning">{% translate "No categories have been defined yet. Ask an administrator to add one in the admin panel." %}</p>
+  {% endif %}
+  <form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {% include "includes/form_fields.html" %}
+    <p class="char-counter" data-counter-for="id_content" data-max="{{ form.content.field.max_length }}"></p>
+    <button type="submit" class="btn">{% translate "Publish" %}</button>
+  </form>
+  <details class="markdown-help">
+    <summary>{% translate "Markdown cheat sheet" %}</summary>
+    <pre>**{% translate "bold" %}**   *{% translate "italic" %}*   [{% translate "link" %}](https://example.com)
+# {% translate "Heading" %}
+- {% translate "list item" %}
+> {% translate "quote" %}
+`code`   #hashtag</pre>
+  </details>
+</section>
+{% endblock %}

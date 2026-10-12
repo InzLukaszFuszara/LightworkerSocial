@@ -1,0 +1,4 @@
+-r requirements.txt
+behave-django>=1.5
+beautifulsoup4>=4.12
+playwright>=1.48

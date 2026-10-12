@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Forum" %}{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>{% translate "Forum" %}</h1>
+  <p>{% translate "Topics of the forum – choose one to see posts from user walls." %}</p>
+</section>
+{% if categories %}
+<table class="forum-table">
+  <thead>
+    <tr><th>{% translate "Topic" %}</th><th>{% translate "Posts" %}</th><th>{% translate "Last post" %}</th></tr>
+  </thead>
+  <tbody>
+  {% for category in categories %}
+    <tr class="forum-topic">
+      <td>
+        <a class="topic-title" href="{{ category.get_absolute_url }}">{{ category.display_name }}</a>
+        {% if category.display_description %}<p class="muted">{{ category.display_description }}</p>{% endif %}
+      </td>
+      <td class="num">{{ category.post_count }}</td>
+      <td>{% if category.last_post_at %}<time datetime="{{ category.last_post_at|date:'c' }}">{{ category.last_post_at|date:"SHORT_DATETIME_FORMAT" }}</time>{% else %}—{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <p class="empty">{% translate "No topics yet." %}</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{{ post }}{% endblock %}
+{% block content %}
+<section class="card">
+  {% include "includes/post_full.html" %}
+  {% if post.hashtags.all %}
+    <p class="tag-list">{% for tag in post.hashtags.all %}<a class="hashtag" href="{{ tag.get_absolute_url }}">{{ tag }}</a> {% endfor %}</p>
+  {% endif %}
+  {% if user == post.author %}
+    <form method="post" action="{% url 'posts:delete' post.pk %}" data-confirm="{% translate 'Delete this post?' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">{% translate "Delete post" %}</button>
+    </form>
+  {% endif %}
+</section>
+{% endblock %}

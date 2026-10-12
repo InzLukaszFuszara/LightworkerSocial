@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Profiles" %}{% endblock %}
+{% block content %}
+<section class="hero"><h1>{% translate "Profiles" %}</h1></section>
+<ul class="profile-list">
+  {% for p in profiles %}
+    <li class="card">
+      <div class="avatar small" aria-hidden="true">{{ p.display_name|first|upper }}</div>
+      <div><a href="{{ p.get_absolute_url }}"><strong>{{ p.display_name }}</strong></a><br><span class="muted">@{{ p.username }}</span></div>
+    </li>
+  {% empty %}
+    <li>{% translate "No users yet." %}</li>
+  {% endfor %}
+</ul>
+{% include "includes/pagination.html" %}
+{% endblock %}

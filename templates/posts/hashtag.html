@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}#{{ tag }}{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>#{{ tag }}</h1>
+  <p>{% blocktranslate count counter=page_obj.paginator.count %}{{ counter }} post with this hashtag, newest first.{% plural %}{{ counter }} posts with this hashtag, newest first.{% endblocktranslate %}</p>
+</section>
+{% include "includes/tiles.html" %}
+{% endblock %}

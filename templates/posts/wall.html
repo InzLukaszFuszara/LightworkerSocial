@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% blocktranslate with name=profile.display_name %}Wall of {{ name }}{% endblocktranslate %}{% endblock %}
+{% block content %}
+<section class="profile-card">
+  <div class="avatar" aria-hidden="true">{{ profile.display_name|first|upper }}</div>
+  <div class="profile-info">
+    <h1>{{ profile.display_name }}</h1>
+    <p class="muted">@{{ profile.username }} · {% blocktranslate with date=profile.date_joined|date:"DATE_FORMAT" %}joined {{ date }}{% endblocktranslate %}
+      · {% blocktranslate count counter=page_obj.paginator.count %}{{ counter }} post{% plural %}{{ counter }} posts{% endblocktranslate %}</p>
+    {% if profile.bio %}<p class="bio">{{ profile.bio|linebreaksbr }}</p>{% endif %}
+  </div>
+  {% if is_owner %}
+    <div class="profile-actions">
+      <a class="btn" href="{% url 'posts:create' %}">+ {% translate "Add a post to your wall" %}</a>
+      <a class="btn btn-secondary" href="{% url 'accounts:edit_profile' %}">{% translate "Edit profile" %}</a>
+    </div>
+  {% endif %}
+</section>
+<h2 class="section-title">{% translate "Wall" %}</h2>
+{% translate "This wall is still empty." as empty_message %}
+{% include "includes/tiles.html" with empty_message=empty_message %}
+{% endblock %}

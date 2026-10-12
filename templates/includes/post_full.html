@@ -1,0 +1,20 @@
+{% load i18n %}<article class="post-full">
+  <header class="post-meta">
+    <a class="author" href="{{ post.author.get_absolute_url }}">{{ post.author.display_name }}</a>
+    · <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"DATETIME_FORMAT" }}</time>
+    · <a class="category-link" href="{{ post.category.get_absolute_url }}">{{ post.category.display_name }}</a>
+  </header>
+  <div class="post-content markdown">{{ post.rendered_content }}</div>
+  {% if post.images.all %}
+    <div class="post-gallery">
+      {% for img in post.images.all %}
+        <a href="{{ img.image.url }}" target="_blank" rel="noopener">
+          <img src="{{ img.image.url }}" alt="{% blocktranslate with n=forloop.counter %}Image {{ n }}{% endblocktranslate %}" loading="lazy">
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <footer class="post-links">
+    <a href="{{ post.get_absolute_url }}">{% translate "Permalink" %}</a>
+  </footer>
+</article>

@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Latest posts" %}{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>{% translate "Latest posts" %}</h1>
+  <p>{% translate "Share your light – posts from all walls of the community." %}</p>
+</section>
+{% include "includes/tiles.html" %}
+{% endblock %}

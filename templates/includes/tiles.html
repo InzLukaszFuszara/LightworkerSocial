@@ -1,0 +1,31 @@
+{% load i18n %}{% if page_obj.object_list %}
+<div class="tiles">
+  {% for post in page_obj %}
+    <article class="tile" data-post-id="{{ post.pk }}">
+      <a class="tile-open" href="{{ post.get_absolute_url }}" data-lightbox-open="post-{{ post.pk }}"
+         aria-label="{% translate 'Open the full post' %}">
+        {% with image=post.first_image %}
+          {% if image %}
+            <img class="tile-thumb" src="{{ image.thumbnail_url }}" alt="" loading="lazy">
+          {% else %}
+            <div class="tile-thumb tile-thumb-empty" aria-hidden="true">✦</div>
+          {% endif %}
+        {% endwith %}
+        <p class="tile-excerpt">{{ post.excerpt }}</p>
+      </a>
+      <footer class="tile-footer">
+        <a class="category-link" href="{{ post.category.get_absolute_url }}">{{ post.category.display_name }}</a>
+        <span class="tile-author">
+          <a href="{{ post.author.get_absolute_url }}">{{ post.author.display_name }}</a>
+          · <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"SHORT_DATE_FORMAT" }}</time>
+        </span>
+      </footer>
+      <template id="post-{{ post.pk }}">{% include "includes/post_full.html" %}</template>
+    </article>
+  {% endfor %}
+</div>
+{% include "includes/pagination.html" %}
+{% else %}
+  {% translate "There are no posts here yet." as default_empty %}
+  <p class="empty">{{ empty_message|default:default_empty }}</p>
+{% endif %}

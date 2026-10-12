@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Log in" %}{% endblock %}
+{% block content %}
+<section class="card form-card narrow">
+  <h1>{% translate "Log in" %}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {% include "includes/form_fields.html" %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit" class="btn">{% translate "Log in" %}</button>
+  </form>
+  <p>{% translate "No account yet?" %} <a href="{% url 'accounts:signup' %}">{% translate "Sign up" %}</a></p>
+</section>
+{% endblock %}
