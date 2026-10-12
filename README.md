@@ -25,8 +25,14 @@ with **BDD** tests (behave + behave-django) and **Polish** and **English** langu
   - a required **category** defined by an administrator in the `/admin/` panel,
   - **Markdown** support (safely sanitised with *bleach*),
   - **#hashtag** support (including Polish characters, e.g. `#spokój`).
+- **Likes** – posts and comments can be liked (click again to unlike); the number of likes and
+  comments is shown under every tile, in the lightbox and on the post page. Likes update without
+  reloading the page (and still work without JavaScript).
+- **Comments** – plain-text comments (max. 1000 characters) on every post; the comment author and
+  the post author can delete a comment.
 - **Forum** (`/forum/`) – categories shown as topics (with the number of posts and the date of the last post);
-  clicking a topic shows tiles with posts from the walls of all users.
+  a topic shows **one post per row** from the walls of all users, with its comments (and their likes)
+  in the rows below and a form to add a comment.
 - **Hashtags** (`/tags/<hashtag>/`) – all posts of all users with the given hashtag,
   sorted newest first.
 - **Languages** – Polish (default) and English; a PL/EN switcher in the header. The language is also
@@ -194,6 +200,8 @@ Scenarios tagged `@browser` (`lightbox.feature`, `chat_browser.feature`) run in 
 | `posting.feature` | adding posts, 2000-character limit, images → WebP, 5 MiB limit, formats |
 | `wall.feature` | wall, 3 tiles per row, 250 characters, thumbnail, category link, lightbox |
 | `forum.feature` | forum, topics = categories, categories from the admin panel |
+| `likes.feature` | liking / unliking posts and comments, counters under tiles, likes in the browser |
+| `comments.feature` | adding / deleting comments, limits, forum rows with comments below each post |
 | `hashtags.feature` | hashtag links, hashtag page sorted by date |
 | `markdown.feature` | Markdown rendering and HTML sanitisation |
 | `i18n.feature` | Polish and English versions |

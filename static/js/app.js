@@ -45,6 +45,38 @@
     if (msg && !window.confirm(msg)) event.preventDefault();
   });
 
+  // Likes of posts and comments without reloading the page. The same post can
+  // be shown twice (tile + lightbox), so every button with the same key is updated.
+  function updateLikes(key, liked, count) {
+    document.querySelectorAll('[data-like="' + key + '"] .like-button').forEach(function (button) {
+      button.classList.toggle("liked", liked);
+      button.setAttribute("aria-pressed", String(liked));
+      button.title = button.getAttribute(liked ? "data-label-unlike" : "data-label-like");
+      button.querySelector(".like-count").textContent = count;
+    });
+  }
+
+  document.addEventListener("submit", function (event) {
+    var form = event.target.closest("[data-like]");
+    if (!form || event.defaultPrevented || !window.fetch) return;
+    event.preventDefault();
+    var button = form.querySelector(".like-button");
+    button.disabled = true;
+    fetch(form.action, {
+      method: "POST",
+      body: new FormData(form),
+      credentials: "same-origin",
+      headers: { "X-Requested-With": "XMLHttpRequest" }
+    })
+      .then(function (response) {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then(function (data) { updateLikes(form.getAttribute("data-like"), data.liked, data.count); })
+      .catch(function () { form.submit(); })
+      .then(function () { button.disabled = false; });
+  });
+
   // Live character counter for the post editor.
   document.querySelectorAll("[data-counter-for]").forEach(function (counter) {
     var field = document.getElementById(counter.getAttribute("data-counter-for"));

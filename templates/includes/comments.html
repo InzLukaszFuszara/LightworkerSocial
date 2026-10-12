@@ -1,0 +1,41 @@
+{% load i18n %}<section class="comments" id="comments" aria-label="{% translate 'Comments' %}">
+  <ol class="comment-list">
+    {% for comment in post.comments.all %}
+      <li class="comment" id="comment-{{ comment.pk }}" data-comment="{{ comment.pk }}">
+        <div class="avatar small" aria-hidden="true">{{ comment.author.display_name|first|upper }}</div>
+        <div class="comment-body">
+          <header class="comment-meta">
+            <a class="author" href="{{ comment.author.get_absolute_url }}">{{ comment.author.display_name }}</a>
+            · <time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:"SHORT_DATETIME_FORMAT" }}</time>
+          </header>
+          <p class="comment-text">{{ comment.text|linebreaksbr }}</p>
+          <footer class="comment-actions">
+            {% url 'posts:like_comment' comment.pk as like_url %}
+            {% include "includes/like_button.html" with url=like_url kind="comment" obj_id=comment.pk liked=comment.liked count=comment.like_count %}
+            {% if user == comment.author or user == post.author %}
+              <form method="post" action="{% url 'posts:delete_comment' comment.pk %}" data-confirm="{% translate 'Delete this comment?' %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button type="submit" class="link-button danger">{% translate "Delete" %}</button>
+              </form>
+            {% endif %}
+          </footer>
+        </div>
+      </li>
+    {% empty %}
+      <li class="comment-empty muted">{% translate "No comments yet." %}</li>
+    {% endfor %}
+  </ol>
+  {% if user.is_authenticated %}
+    <form class="comment-form" method="post" action="{% url 'posts:add_comment' post.pk %}">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <label class="visually-hidden" for="comment-text-{{ post.pk }}">{% translate "Comment" %}</label>
+      <textarea id="comment-text-{{ post.pk }}" name="text" rows="2" maxlength="{{ comment_max_length }}" required
+                placeholder="{% translate 'Write a comment…' %}"></textarea>
+      <button type="submit" class="btn btn-small">{% translate "Comment" %}</button>
+    </form>
+  {% else %}
+    <p class="muted"><a href="{% url 'accounts:login' %}?next={{ request.get_full_path|urlencode }}">{% translate "Log in to comment" %}</a></p>
+  {% endif %}
+</section>

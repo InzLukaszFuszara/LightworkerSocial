@@ -1,0 +1,21 @@
+{% load i18n %}{# Parameters: url, kind ("post" or "comment"), obj_id, liked, count #}
+{% if user.is_authenticated %}
+<form class="like-form" method="post" action="{{ url }}" data-like="{{ kind }}-{{ obj_id }}">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+  <button type="submit" class="like-button{% if liked %} liked{% endif %}" aria-pressed="{{ liked|yesno:'true,false' }}"
+          title="{% if liked %}{% translate 'Unlike' %}{% else %}{% translate 'Like' %}{% endif %}"
+          data-label-like="{% translate 'Like' %}" data-label-unlike="{% translate 'Unlike' %}">
+    <span class="like-heart" aria-hidden="true">♥</span>
+    <span class="like-count">{{ count }}</span>
+    <span class="visually-hidden">{% translate "likes" %}</span>
+  </button>
+</form>
+{% else %}
+<a class="like-button" href="{% url 'accounts:login' %}?next={{ request.get_full_path|urlencode }}"
+   title="{% translate 'Log in to like' %}">
+  <span class="like-heart" aria-hidden="true">♥</span>
+  <span class="like-count">{{ count }}</span>
+  <span class="visually-hidden">{% translate "likes" %}</span>
+</a>
+{% endif %}

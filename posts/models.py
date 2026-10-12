@@ -46,13 +46,34 @@ class Hashtag(models.Model):
         return reverse("posts:hashtag", kwargs={"name": self.name})
 
 
+def _liked_by(model, user, field):
+    """``Exists`` expression: has ``user`` liked the outer object?"""
+    if user is None or not user.is_authenticated:
+        return models.Value(False, output_field=models.BooleanField())
+    return models.Exists(model.objects.filter(user=user, **{field: models.OuterRef("pk")}))
+
+
 class PostQuerySet(models.QuerySet):
-    def for_tiles(self):
+    def with_stats(self, user=None):
+        """Annotate like/comment counts and whether ``user`` likes each post."""
+        return self.annotate(
+            like_count=models.Count("likes", distinct=True),
+            comment_count=models.Count("comments", distinct=True),
+            liked=_liked_by(PostLike, user, "post"),
+        )
+
+    def for_tiles(self, user=None):
         return (
-            self.select_related("author", "category")
+            self.with_stats(user)
+            .select_related("author", "category")
             .prefetch_related("images")
             .order_by("-created_at", "-pk")
         )
+
+    def for_discussion(self, user=None):
+        """Posts with their comments (oldest first), as shown on the forum."""
+        comments = Comment.objects.with_stats(user).select_related("author").order_by("created_at", "pk")
+        return self.for_tiles(user).prefetch_related(models.Prefetch("comments", queryset=comments))
 
 
 class Post(models.Model):
@@ -157,3 +178,81 @@ def delete_image_files(sender, instance, **kwargs):
     for field in (instance.image, instance.thumbnail):
         if field:
             field.storage.delete(field.name)
+
+
+class PostLike(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes", verbose_name=_("post"))
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="post_likes", verbose_name=_("user")
+    )
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("post like")
+        verbose_name_plural = _("post likes")
+        constraints = [models.UniqueConstraint(fields=["post", "user"], name="unique_post_like")]
+
+    def __str__(self):
+        return f"{self.user} ♥ {self.post_id}"
+
+
+class CommentQuerySet(models.QuerySet):
+    def with_stats(self, user=None):
+        return self.annotate(
+            like_count=models.Count("likes", distinct=True),
+            liked=_liked_by(CommentLike, user, "comment"),
+        )
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments", verbose_name=_("post"))
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comments", verbose_name=_("author")
+    )
+    text = models.TextField(
+        _("comment"), validators=[MaxLengthValidator(settings.COMMENT_MAX_LENGTH)]
+    )
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True, db_index=True)
+
+    objects = CommentQuerySet.as_manager()
+
+    class Meta:
+        verbose_name = _("comment")
+        verbose_name_plural = _("comments")
+        ordering = ["created_at", "pk"]
+
+    def __str__(self):
+        return self.text[:60]
+
+    def get_absolute_url(self):
+        return f"{self.post.get_absolute_url()}#comment-{self.pk}"
+
+    def can_delete(self, user):
+        return user.is_authenticated and user.pk in (self.author_id, self.post.author_id)
+
+
+class CommentLike(models.Model):
+    comment = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, related_name="likes", verbose_name=_("comment")
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comment_likes", verbose_name=_("user")
+    )
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("comment like")
+        verbose_name_plural = _("comment likes")
+        constraints = [models.UniqueConstraint(fields=["comment", "user"], name="unique_comment_like")]
+
+    def __str__(self):
+        return f"{self.user} ♥ comment {self.comment_id}"
+
+
+def toggle_like(model, user, **target):
+    """Like or unlike; returns ``(liked, like_count)``."""
+    deleted, _rows = model.objects.filter(user=user, **target).delete()
+    liked = not deleted
+    if liked:
+        model.objects.get_or_create(user=user, **target)
+    return liked, model.objects.filter(**target).count()

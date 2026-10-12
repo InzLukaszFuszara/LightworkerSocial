@@ -15,6 +15,7 @@
     </div>
   {% endif %}
   <footer class="post-links">
-    <a href="{{ post.get_absolute_url }}">{% translate "Permalink" %}</a>
+    {% if show_stats %}{% include "includes/post_stats.html" %}{% endif %}
+    <a href="{{ post.get_absolute_url }}">{% if show_stats %}{% translate "Open the discussion" %}{% else %}{% translate "Permalink" %}{% endif %}</a>
   </footer>
 </article>

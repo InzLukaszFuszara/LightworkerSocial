@@ -6,6 +6,8 @@
   {% if post.hashtags.all %}
     <p class="tag-list">{% for tag in post.hashtags.all %}<a class="hashtag" href="{{ tag.get_absolute_url }}">{{ tag }}</a> {% endfor %}</p>
   {% endif %}
+  {% include "includes/post_stats.html" %}
+  {% include "includes/comments.html" %}
   {% if user == post.author %}
     <form method="post" action="{% url 'posts:delete' post.pk %}" data-confirm="{% translate 'Delete this post?' %}">
       {% csrf_token %}

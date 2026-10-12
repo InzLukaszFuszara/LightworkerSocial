@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from .models import Category, Hashtag, Post, PostImage
+from .models import Category, Comment, Hashtag, Post, PostImage
 
 
 @admin.register(Category)
@@ -43,3 +43,10 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(Hashtag)
 class HashtagAdmin(admin.ModelAdmin):
     search_fields = ("name",)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ("__str__", "author", "post", "created_at")
+    search_fields = ("text", "author__username", "author__email")
+    raw_id_fields = ("post", "author")

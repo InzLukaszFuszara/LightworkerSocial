@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-12 16:07+0200\n"
+"POT-Creation-Date: 2026-10-12 19:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,7 +91,7 @@ msgid "activation e-mail sent at"
 msgstr "e-mail aktywacyjny wysłany"
 
 #: accounts/models.py:68 chat/models.py:28 chat/models.py:153
-#: chat/models.py:269
+#: chat/models.py:269 posts/models.py:186 posts/models.py:239
 msgid "user"
 msgstr "użytkownik"
 
@@ -200,7 +200,8 @@ msgid "invite token"
 msgstr "token zaproszenia"
 
 #: chat/models.py:86 chat/models.py:208 chat/models.py:242 chat/models.py:272
-#: posts/models.py:79
+#: posts/models.py:100 posts/models.py:188 posts/models.py:215
+#: posts/models.py:241
 msgid "created at"
 msgstr "data dodania"
 
@@ -260,7 +261,7 @@ msgstr "pokoje"
 msgid "General"
 msgstr "Ogólny"
 
-#: chat/models.py:233 posts/models.py:63
+#: chat/models.py:233 posts/models.py:84 posts/models.py:210
 msgid "author"
 msgstr "autor"
 
@@ -268,7 +269,7 @@ msgstr "autor"
 msgid "text"
 msgstr "tekst"
 
-#: chat/models.py:241 posts/models.py:127 posts/models.py:133
+#: chat/models.py:241 posts/models.py:148 posts/models.py:154
 msgid "image"
 msgstr "zdjęcie"
 
@@ -356,11 +357,11 @@ msgstr "Nie można wyciszyć założyciela."
 msgid "Your request has been sent. The group owner has to approve it."
 msgstr "Prośba została wysłana. Założyciel grupy musi ją zaakceptować."
 
-#: config/settings.py:91
+#: config/settings.py:123
 msgid "Polish"
 msgstr "Polski"
 
-#: config/settings.py:92
+#: config/settings.py:124
 msgid "English"
 msgstr "Angielski"
 
@@ -376,7 +377,7 @@ msgstr "Wpisy"
 msgid "Content"
 msgstr "Treść"
 
-#: posts/forms.py:46 posts/models.py:74
+#: posts/forms.py:46 posts/models.py:95
 msgid "Markdown is supported. Use #hashtags to tag your post."
 msgstr "Obsługiwany jest Markdown. Używaj #hashtagów, aby oznaczyć wpis."
 
@@ -405,6 +406,15 @@ msgstr[0] "Możesz dołączyć maksymalnie %(limit)d zdjęcie."
 msgstr[1] "Możesz dołączyć maksymalnie %(limit)d zdjęcia."
 msgstr[2] "Możesz dołączyć maksymalnie %(limit)d zdjęć."
 
+#: posts/forms.py:89 templates/includes/comments.html:33
+#: templates/includes/comments.html:36
+msgid "Comment"
+msgstr "Skomentuj"
+
+#: posts/forms.py:95 templates/includes/comments.html:35
+msgid "Write a comment…"
+msgstr "Napisz komentarz…"
+
 #: posts/images.py:24
 #, python-format
 msgid "File %(name)s is too large (%(size)s). The maximum size is %(max)s."
@@ -432,11 +442,11 @@ msgstr "slug (adres)"
 msgid "description"
 msgstr "opis"
 
-#: posts/models.py:20 posts/models.py:130
+#: posts/models.py:20 posts/models.py:151
 msgid "position"
 msgstr "kolejność"
 
-#: posts/models.py:23 posts/models.py:69
+#: posts/models.py:23 posts/models.py:90
 msgid "category"
 msgstr "kategoria"
 
@@ -448,39 +458,72 @@ msgstr "kategorie"
 msgid "hashtag"
 msgstr "hashtag"
 
-#: posts/models.py:39 posts/models.py:77
+#: posts/models.py:39 posts/models.py:98
 msgid "hashtags"
 msgstr "hashtagi"
 
-#: posts/models.py:72
+#: posts/models.py:93
 msgid "content"
 msgstr "treść"
 
-#: posts/models.py:80
+#: posts/models.py:101
 msgid "updated at"
 msgstr "data modyfikacji"
 
-#: posts/models.py:85 posts/models.py:124
+#: posts/models.py:106 posts/models.py:145 posts/models.py:184
+#: posts/models.py:208
 msgid "post"
 msgstr "wpis"
 
-#: posts/models.py:86
+#: posts/models.py:107
 msgid "posts"
 msgstr "wpisy"
 
-#: posts/models.py:129
+#: posts/models.py:150
 msgid "thumbnail"
 msgstr "miniaturka"
 
-#: posts/models.py:134
+#: posts/models.py:155
 msgid "images"
 msgstr "zdjęcia"
 
-#: posts/views.py:42
+#: posts/models.py:191
+msgid "post like"
+msgstr "polubienie wpisu"
+
+#: posts/models.py:192
+msgid "post likes"
+msgstr "polubienia wpisów"
+
+#: posts/models.py:213 posts/models.py:220 posts/models.py:236
+msgid "comment"
+msgstr "komentarz"
+
+#: posts/models.py:221 templates/includes/post_stats.html:6
+msgid "comments"
+msgstr "komentarze"
+
+#: posts/models.py:244
+msgid "comment like"
+msgstr "polubienie komentarza"
+
+#: posts/models.py:245
+msgid "comment likes"
+msgstr "polubienia komentarzy"
+
+#: posts/views.py:43
 msgid "Your post has been added to your wall."
 msgstr "Twój wpis został dodany do Twojej tablicy."
 
-#: posts/views.py:66
+#: posts/views.py:101
+msgid "Your comment has been added."
+msgstr "Twój komentarz został dodany."
+
+#: posts/views.py:117
+msgid "The comment has been deleted."
+msgstr "Komentarz został usunięty."
+
+#: posts/views.py:128
 msgid "The post has been deleted."
 msgstr "Wpis został usunięty."
 
@@ -784,9 +827,46 @@ msgstr "Napisz wiadomość…"
 msgid "Send"
 msgstr "Wyślij"
 
+#: templates/includes/comments.html:1 templates/includes/post_stats.html:4
+msgid "Comments"
+msgstr "Komentarze"
+
+#: templates/includes/comments.html:16
+msgid "Delete this comment?"
+msgstr "Usunąć ten komentarz?"
+
+#: templates/includes/comments.html:19
+msgid "Delete"
+msgstr "Usuń"
+
+#: templates/includes/comments.html:26
+msgid "No comments yet."
+msgstr "Nie ma jeszcze komentarzy."
+
+#: templates/includes/comments.html:39
+msgid "Log in to comment"
+msgstr "Zaloguj się, aby komentować"
+
 #: templates/includes/lightbox.html:5
 msgid "Post"
 msgstr "Wpis"
+
+#: templates/includes/like_button.html:7 templates/includes/like_button.html:8
+msgid "Unlike"
+msgstr "Cofnij polubienie"
+
+#: templates/includes/like_button.html:7 templates/includes/like_button.html:8
+msgid "Like"
+msgstr "Polub"
+
+#: templates/includes/like_button.html:11
+#: templates/includes/like_button.html:19
+msgid "likes"
+msgstr "polubienia"
+
+#: templates/includes/like_button.html:16
+msgid "Log in to like"
+msgstr "Zaloguj się, aby polubić"
 
 #: templates/includes/pagination.html:2
 msgid "Pages"
@@ -810,7 +890,11 @@ msgstr "Następna"
 msgid "Image %(n)s"
 msgstr "Zdjęcie %(n)s"
 
-#: templates/includes/post_full.html:18
+#: templates/includes/post_full.html:19
+msgid "Open the discussion"
+msgstr "Otwórz dyskusję"
+
+#: templates/includes/post_full.html:19
 msgid "Permalink"
 msgstr "Link do wpisu"
 
@@ -818,7 +902,7 @@ msgstr "Link do wpisu"
 msgid "Open the full post"
 msgstr "Otwórz pełny wpis"
 
-#: templates/includes/tiles.html:29
+#: templates/includes/tiles.html:30 templates/posts/forum_topic.html:21
 msgid "There are no posts here yet."
 msgstr "Nie ma tu jeszcze żadnych wpisów."
 
@@ -855,11 +939,11 @@ msgstr "Najnowsze wpisy"
 msgid "Share your light – posts from all walls of the community."
 msgstr "Dziel się światłem – wpisy ze wszystkich tablic społeczności."
 
-#: templates/posts/post_detail.html:10
+#: templates/posts/post_detail.html:12
 msgid "Delete this post?"
 msgstr "Usunąć ten wpis?"
 
-#: templates/posts/post_detail.html:12
+#: templates/posts/post_detail.html:14
 msgid "Delete post"
 msgstr "Usuń wpis"
 

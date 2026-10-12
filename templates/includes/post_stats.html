@@ -1,0 +1,8 @@
+{% load i18n %}<div class="post-stats">
+  {% url 'posts:like' post.pk as like_url %}
+  {% include "includes/like_button.html" with url=like_url kind="post" obj_id=post.pk liked=post.liked count=post.like_count %}
+  <a class="comment-count" href="{{ post.get_absolute_url }}#comments" title="{% translate 'Comments' %}">
+    <span aria-hidden="true">💬</span> <span>{{ post.comment_count }}</span>
+    <span class="visually-hidden">{% translate "comments" %}</span>
+  </a>
+</div>

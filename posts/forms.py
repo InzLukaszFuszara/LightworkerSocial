@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.translation import ngettext
 
 from .images import ACCEPT_ATTR, validate_image_upload
-from .models import Category, Post, PostImage
+from .models import Category, Comment, Post, PostImage
 
 
 class MultipleImageInput(forms.ClearableFileInput):
@@ -82,3 +82,21 @@ class PostForm(forms.ModelForm):
         for position, uploaded in enumerate(self.cleaned_data.get("images") or []):
             PostImage.objects.create(post=post, image=uploaded, position=position)
         return post
+
+
+class CommentForm(forms.ModelForm):
+    text = forms.CharField(
+        label=_("Comment"),
+        max_length=settings.COMMENT_MAX_LENGTH,
+        widget=forms.Textarea(
+            attrs={
+                "rows": 2,
+                "maxlength": settings.COMMENT_MAX_LENGTH,
+                "placeholder": _("Write a comment…"),
+            }
+        ),
+    )
+
+    class Meta:
+        model = Comment
+        fields = ("text",)

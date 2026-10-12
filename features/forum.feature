@@ -14,12 +14,13 @@ Feature: Forum with categories as topics
     Then I should see the forum topic "Meditation"
     And I should see the forum topic "Healing"
 
-  Scenario: A topic shows tiles with posts from the walls of all users
+  Scenario: A topic shows posts from the walls of all users, one per row
     Given "anna" has posted "Anna meditates" in category "Meditation"
     And "bob" has posted "Bob meditates" in category "Meditation"
     And "bob" has posted "Bob heals" in category "Healing"
     When I visit the forum topic "Meditation"
-    Then I should see 2 tiles
+    Then I should see 2 forum posts
+    And I should see 0 tiles
     And the page should contain "Anna meditates"
     And the page should contain "Bob meditates"
     And the page should not contain "Bob heals"

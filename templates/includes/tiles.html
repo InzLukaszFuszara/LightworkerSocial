@@ -20,7 +20,8 @@
           · <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"SHORT_DATE_FORMAT" }}</time>
         </span>
       </footer>
-      <template id="post-{{ post.pk }}">{% include "includes/post_full.html" %}</template>
+      {% include "includes/post_stats.html" %}
+      <template id="post-{{ post.pk }}">{% include "includes/post_full.html" with show_stats=True %}</template>
     </article>
   {% endfor %}
 </div>

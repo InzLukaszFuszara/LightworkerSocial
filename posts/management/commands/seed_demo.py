@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand
 from PIL import Image, ImageDraw
 
 from chat.models import Conversation, Membership, Message, Presence, Room
-from posts.models import Category, Post, PostImage
+from posts.models import Category, Comment, CommentLike, Post, PostImage, PostLike
 
 CATEGORIES = [
     ("Medytacja", "medytacja"),
@@ -68,8 +68,20 @@ class Command(BaseCommand):
             post.sync_hashtags()
             if i % 2 == 0:
                 PostImage.objects.create(post=post, image=_picture(i), position=0)
+        self._seed_engagement(users)
         self._seed_chat(users)
         self.stdout.write(self.style.SUCCESS("Demo data created."))
+
+    def _seed_engagement(self, users):
+        replies = ["Piękne słowa 🙏", "Dziękuję, potrzebowałam tego dziś.", "Też tak mam!"]
+        for i, post in enumerate(Post.objects.order_by("pk")):
+            for j, user in enumerate(users):
+                if (i + j) % 2 == 0 and user != post.author:
+                    PostLike.objects.get_or_create(post=post, user=user)
+            if i % 3 != 2:
+                commenter = users[(i + 1) % 3]
+                comment = Comment.objects.create(post=post, author=commenter, text=replies[i % 3])
+                CommentLike.objects.get_or_create(comment=comment, user=post.author)
 
     def _seed_chat(self, users):
         anna, bartek, celina = users

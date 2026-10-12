@@ -6,5 +6,18 @@
   <h1>{{ category.name }}</h1>
   {% if category.description %}<p>{{ category.description }}</p>{% endif %}
 </section>
-{% include "includes/tiles.html" %}
+{% if page_obj.object_list %}
+<div class="forum-posts">
+  {% for post in page_obj %}
+    <article class="forum-post card" id="post-{{ post.pk }}" data-post-id="{{ post.pk }}">
+      {% include "includes/post_full.html" %}
+      {% include "includes/post_stats.html" %}
+      {% include "includes/comments.html" %}
+    </article>
+  {% endfor %}
+</div>
+{% include "includes/pagination.html" %}
+{% else %}
+  <p class="empty">{% translate "There are no posts here yet." %}</p>
+{% endif %}
 {% endblock %}

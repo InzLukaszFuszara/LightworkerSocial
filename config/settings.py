@@ -66,7 +66,6 @@ if importlib.util.find_spec("behave_django"):
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -75,6 +74,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if not DEBUG:
+    # WhiteNoise serves the collected static files in production; in
+    # development runserver serves them from the app directories.
+    MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
 ROOT_URLCONF = "config.urls"
 
@@ -90,6 +94,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "chat.context_processors.chat",
+                "posts.context_processors.limits",
             ],
         },
     },
@@ -188,6 +193,7 @@ POST_MAX_LENGTH = 2000
 POST_EXCERPT_LENGTH = 250
 POST_IMAGE_MAX_BYTES = 5 * 1024 * 1024  # 5 MiB
 POST_MAX_IMAGES = 20
+COMMENT_MAX_LENGTH = 1000
 POSTS_PER_PAGE = 12  # multiple of 3 -> full rows of tiles
 THUMBNAIL_SIZE = (480, 480)
 
