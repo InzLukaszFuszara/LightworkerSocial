@@ -135,8 +135,13 @@ def step_redirect_wall(context, username):
 
 @then("I should be redirected to the login page")
 def step_redirect_login(context):
+    login_url = reverse("accounts:login")
+    if context.response.status_code == 302:
+        assert context.response["Location"].startswith(login_url), context.response["Location"]
+        context.response = client(context).get(context.response["Location"])
+        return
     assert context.response.redirect_chain, "No redirect happened"
-    assert context.response.redirect_chain[-1][0].startswith(reverse("accounts:login"))
+    assert context.response.redirect_chain[-1][0].startswith(login_url)
 
 
 # --------------------------------------------------------------------------

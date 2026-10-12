@@ -39,11 +39,14 @@ def before_scenario(context, scenario):
     context.response = None
     context.upload_files = []
     context.browser = None
+    context.cleanups = []  # callables run after the scenario (e.g. stop a test SMTP server)
     if "browser" in scenario.effective_tags:
         _start_browser(context, scenario)
 
 
 def after_scenario(context, scenario):
+    for cleanup in reversed(context.cleanups):
+        cleanup()
     # Close the browser before behave-django tears down the live server.
     if context.browser:
         context.page.close()

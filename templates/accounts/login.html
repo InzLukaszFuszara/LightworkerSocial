@@ -9,6 +9,9 @@
     <input type="hidden" name="next" value="{{ next }}">
     <button type="submit" class="btn">{% translate "Log in" %}</button>
   </form>
+  {% if form.unconfirmed_user %}
+    <p class="message warning"><a href="{% url 'accounts:resend_activation' %}?email={{ form.unconfirmed_user.email|urlencode }}">{% translate "Send the activation link again" %}</a></p>
+  {% endif %}
   <p>{% translate "No account yet?" %} <a href="{% url 'accounts:signup' %}">{% translate "Sign up" %}</a></p>
 </section>
 {% endblock %}

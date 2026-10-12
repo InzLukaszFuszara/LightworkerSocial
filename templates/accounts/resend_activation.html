@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Send the activation link again" %}{% endblock %}
+{% block content %}
+<section class="card form-card narrow">
+  <h1>{% translate "Send the activation link again" %}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {% include "includes/form_fields.html" %}
+    <button type="submit" class="btn">{% translate "Send a new link" %}</button>
+  </form>
+</section>
+{% endblock %}

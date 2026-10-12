@@ -5,6 +5,8 @@ from pathlib import Path
 
 from django.utils.translation import gettext_lazy as _
 
+from .email import email_settings
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get(
@@ -102,6 +104,21 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = Path(os.environ.get("DJANGO_MEDIA_ROOT", BASE_DIR / "media"))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# E-mail via SMTP – see config/email.py for the environment variables.
+_email = email_settings(os.environ, debug=DEBUG)
+EMAIL_BACKEND = _email["EMAIL_BACKEND"]
+EMAIL_HOST = _email["EMAIL_HOST"]
+EMAIL_PORT = _email["EMAIL_PORT"]
+EMAIL_HOST_USER = _email["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = _email["EMAIL_HOST_PASSWORD"]
+EMAIL_USE_TLS = _email["EMAIL_USE_TLS"]
+EMAIL_USE_SSL = _email["EMAIL_USE_SSL"]
+EMAIL_TIMEOUT = _email["EMAIL_TIMEOUT"]
+DEFAULT_FROM_EMAIL = _email["DEFAULT_FROM_EMAIL"]
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+ACCOUNT_ACTIVATION_DAYS = int(os.environ.get("ACCOUNT_ACTIVATION_DAYS", "3"))
+ACCOUNT_ACTIVATION_RESEND_SECONDS = 60
 
 # Application specific limits.
 POST_MAX_LENGTH = 2000

@@ -3,8 +3,10 @@ Feature: Signing up and logging in with e-mail and password
   I want to create an account and log in with my e-mail address
   So that I can publish posts on my wall
 
-  Scenario: A visitor signs up and lands on their own wall
+  Scenario: A visitor signs up, confirms the e-mail and lands on their own wall
     When I sign up with e-mail "anna@example.com", username "anna" and password "S3cret-pass!"
+    Then I should not be logged in
+    When I open the activation link from the e-mail to "anna@example.com"
     Then I should be redirected to the wall of "anna"
     And I should be logged in as "anna@example.com"
 

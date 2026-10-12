@@ -57,6 +57,7 @@ class Command(BaseCommand):
             )
             if created:
                 user.set_password("demo-pass-123")
+                user.email_verified = True
                 user.bio = f"Cześć, jestem {username.capitalize()}!"
                 user.save()
             users.append(user)

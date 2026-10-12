@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Check your mailbox" %}{% endblock %}
+{% block content %}
+<section class="card form-card narrow">
+  <h1>{% translate "Check your mailbox" %}</h1>
+  {% if sent %}
+    <p>{% blocktranslate %}We have sent an activation link to <strong>{{ email }}</strong>. Click it to confirm your e-mail address and activate your account.{% endblocktranslate %}</p>
+    <p class="muted">{% blocktranslate count days=days %}The link is valid for {{ days }} day.{% plural %}The link is valid for {{ days }} days.{% endblocktranslate %}
+      {% translate "Did not get the e-mail? Check the spam folder." %}</p>
+  {% else %}
+    <p>{% blocktranslate %}Your account <strong>{{ email }}</strong> has been created, but the activation e-mail could not be sent. Request it again below.{% endblocktranslate %}</p>
+  {% endif %}
+  <p><a href="{% url 'accounts:resend_activation' %}?email={{ email|urlencode }}">{% translate "Send the activation link again" %}</a></p>
+</section>
+{% endblock %}

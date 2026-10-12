@@ -7,6 +7,10 @@ with **BDD** tests (behave + behave-django) and **Polish** and **English** langu
 
 - **Accounts** – sign-up and login with **e-mail and password** (`accounts.User`, `USERNAME_FIELD = "email"`).
   The username is only used as the public address of the profile (`/u/<username>/`).
+- **E-mail confirmation (SMTP)** – a new account stays inactive until the user opens the activation
+  link sent by e-mail (plain text + HTML, in the visitor's language). The link is signed, valid for
+  `ACCOUNT_ACTIVATION_DAYS` (3 days by default) and works only once; a new link can be requested
+  (at most once a minute). Logging in before activation explains what to do.
 - **User profile with a wall** – a profile header (name, "about me", number of posts) and a wall of posts
   shown as **tiles, 3 per row** (2 / 1 on narrower screens). Each tile contains:
   - the first **250 characters** of the post (plain text without Markdown markup),
@@ -58,6 +62,32 @@ Then add categories in the admin panel at `http://127.0.0.1:8000/admin/` (Posts 
 Environment variables for production: `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=0`,
 `DJANGO_ALLOWED_HOSTS`, `DJANGO_DB_PATH`, `DJANGO_MEDIA_ROOT`.
 
+### E-mail (SMTP)
+
+Activation e-mails are sent over SMTP, configured with environment variables
+(see `config/email.py`). Without `EMAIL_HOST`, the development server (`DJANGO_DEBUG=1`)
+prints e-mails to the console, so you can copy the activation link from the terminal.
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `EMAIL_HOST` | – | SMTP server, e.g. `smtp.gmail.com` |
+| `EMAIL_PORT` | `587` (`465` with SSL) | SMTP port |
+| `EMAIL_HOST_USER` | – | SMTP login |
+| `EMAIL_HOST_PASSWORD` | – | SMTP password / app password |
+| `EMAIL_USE_TLS` | `1` | STARTTLS (port 587) |
+| `EMAIL_USE_SSL` | `0` | implicit TLS (port 465); cannot be combined with `EMAIL_USE_TLS` |
+| `EMAIL_TIMEOUT` | `10` | connection timeout in seconds |
+| `DEFAULT_FROM_EMAIL` | `Lightworker Social <no-reply@localhost>` | sender address |
+| `ACCOUNT_ACTIVATION_DAYS` | `3` | how long an activation link is valid |
+
+```bash
+export EMAIL_HOST=smtp.example.com EMAIL_HOST_USER=bot@example.com EMAIL_HOST_PASSWORD=secret
+export DEFAULT_FROM_EMAIL="Lightworker Social <bot@example.com>"
+python manage.py runserver
+```
+
+Accounts created with `createsuperuser` or in the admin panel are active immediately.
+
 ## BDD tests
 
 Gherkin scenarios live in the `features/` directory and step definitions in `features/steps/`.
@@ -67,12 +97,14 @@ python manage.py behave                 # all scenarios
 python manage.py behave --tags=-browser # without the browser test
 ```
 
+The `@smtp` scenario delivers the activation e-mail through a local test SMTP server (`aiosmtpd`).
 Scenarios tagged `@browser` (`lightbox.feature`, `chat_browser.feature`) run in a real browser
 (Playwright + Chromium: `playwright install chromium` or the `CHROMIUM_PATH` variable).
 
 | File | Scope |
 |------|-------|
 | `authentication.feature` | sign-up, login with e-mail and password, logout |
+| `registration.feature` | activation e-mail, activation link (expiry, reuse, tampering), resending, SMTP delivery and configuration |
 | `posting.feature` | adding posts, 2000-character limit, images → WebP, 5 MiB limit, formats |
 | `wall.feature` | wall, 3 tiles per row, 250 characters, thumbnail, category link, lightbox |
 | `forum.feature` | forum, topics = categories, categories from the admin panel |
@@ -96,8 +128,8 @@ python manage.py compilemessages
 ## Project structure
 
 ```
-config/     settings and root URLs
-accounts/   user model (e-mail login), sign-up, profile, profile list
+config/     settings (incl. SMTP configuration in email.py) and root URLs
+accounts/   user model (e-mail login), sign-up with e-mail activation, profile, profile list
 posts/      categories, posts, images (WebP conversion), hashtags, Markdown, wall, forum
 chat/       messenger: presence, direct and group conversations, rooms, messages, join requests
 templates/  HTML templates

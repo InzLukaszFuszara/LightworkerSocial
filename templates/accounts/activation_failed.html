@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% translate "Activation failed" %}{% endblock %}
+{% block content %}
+<section class="card form-card narrow">
+  <h1>{% translate "Activation failed" %}</h1>
+  {% if reason == "expired" %}
+    <p class="message warning">{% translate "This activation link has expired." %}</p>
+  {% else %}
+    <p class="message warning">{% translate "This activation link is invalid." %}</p>
+  {% endif %}
+  <p>{% translate "Enter your e-mail address to receive a new activation link." %}</p>
+  <form method="post" action="{% url 'accounts:resend_activation' %}">
+    {% csrf_token %}
+    {% include "includes/form_fields.html" %}
+    <button type="submit" class="btn">{% translate "Send a new link" %}</button>
+  </form>
+</section>
+{% endblock %}

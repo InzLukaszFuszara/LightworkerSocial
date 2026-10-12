@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-12 15:46+0200\n"
+"POT-Creation-Date: 2026-10-12 16:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: accounts/admin.py:15
+#: accounts/admin.py:18
 msgid "Personal info"
 msgstr "Dane osobowe"
 
-#: accounts/admin.py:17
+#: accounts/admin.py:20
 msgid "Permissions"
 msgstr "Uprawnienia"
 
-#: accounts/admin.py:20
+#: accounts/admin.py:32
 msgid "Important dates"
 msgstr "Ważne daty"
 
@@ -34,7 +34,7 @@ msgstr "Ważne daty"
 msgid "Accounts"
 msgstr "Konta"
 
-#: accounts/forms.py:11
+#: accounts/forms.py:11 accounts/forms.py:73
 msgid "E-mail"
 msgstr "E-mail"
 
@@ -46,7 +46,15 @@ msgstr "Nieprawidłowy e-mail lub hasło."
 msgid "This account is inactive."
 msgstr "To konto jest nieaktywne."
 
-#: accounts/forms.py:29
+#: accounts/forms.py:19
+msgid ""
+"This account has not been activated yet. Click the link in the e-mail we "
+"sent you or request a new one."
+msgstr ""
+"To konto nie zostało jeszcze aktywowane. Kliknij link w wysłanym e-mailu lub"
+" poproś o nowy."
+
+#: accounts/forms.py:60
 msgid "An account with this e-mail already exists."
 msgstr "Konto z tym adresem e-mail już istnieje."
 
@@ -70,20 +78,49 @@ msgstr "adres e-mail"
 msgid "about me"
 msgstr "o mnie"
 
-#: accounts/models.py:62 chat/models.py:28 chat/models.py:153
+#: accounts/models.py:56
+msgid "e-mail verified"
+msgstr "e-mail potwierdzony"
+
+#: accounts/models.py:58
+msgid "Set when the user confirms the address with the activation link."
+msgstr "Ustawiane, gdy użytkownik potwierdzi adres linkiem aktywacyjnym."
+
+#: accounts/models.py:60
+msgid "activation e-mail sent at"
+msgstr "e-mail aktywacyjny wysłany"
+
+#: accounts/models.py:68 chat/models.py:28 chat/models.py:153
 #: chat/models.py:269
 msgid "user"
 msgstr "użytkownik"
 
-#: accounts/models.py:63
+#: accounts/models.py:69
 msgid "users"
 msgstr "użytkownicy"
 
-#: accounts/views.py:25
-msgid "Welcome! Your account has been created."
-msgstr "Witaj! Twoje konto zostało utworzone."
+#: accounts/views.py:34
+msgid "We could not send the activation e-mail. Please try again in a moment."
+msgstr ""
+"Nie udało się wysłać e-maila aktywacyjnego. Spróbuj ponownie za chwilę."
 
-#: accounts/views.py:35
+#: accounts/views.py:64
+msgid "Your account is already active. You can log in."
+msgstr "Twoje konto jest już aktywne. Możesz się zalogować."
+
+#: accounts/views.py:69
+msgid "Your e-mail address has been confirmed. Welcome!"
+msgstr "Twój adres e-mail został potwierdzony. Witaj!"
+
+#: accounts/views.py:91
+msgid ""
+"If an account with this address is waiting for activation, we have sent a "
+"new activation link."
+msgstr ""
+"Jeśli konto z tym adresem czeka na aktywację, wysłaliśmy nowy link "
+"aktywacyjny."
+
+#: accounts/views.py:104
 msgid "Your profile has been updated."
 msgstr "Twój profil został zaktualizowany."
 
@@ -319,11 +356,11 @@ msgstr "Nie można wyciszyć założyciela."
 msgid "Your request has been sent. The group owner has to approve it."
 msgstr "Prośba została wysłana. Założyciel grupy musi ją zaakceptować."
 
-#: config/settings.py:89
+#: config/settings.py:91
 msgid "Polish"
 msgstr "Polski"
 
-#: config/settings.py:90
+#: config/settings.py:92
 msgid "English"
 msgstr "Angielski"
 
@@ -447,17 +484,90 @@ msgstr "Twój wpis został dodany do Twojej tablicy."
 msgid "The post has been deleted."
 msgstr "Wpis został usunięty."
 
+#: templates/accounts/activation_failed.html:2
+#: templates/accounts/activation_failed.html:5
+msgid "Activation failed"
+msgstr "Aktywacja nie powiodła się"
+
+#: templates/accounts/activation_failed.html:7
+msgid "This activation link has expired."
+msgstr "Ten link aktywacyjny wygasł."
+
+#: templates/accounts/activation_failed.html:9
+msgid "This activation link is invalid."
+msgstr "Ten link aktywacyjny jest nieprawidłowy."
+
+#: templates/accounts/activation_failed.html:11
+msgid "Enter your e-mail address to receive a new activation link."
+msgstr "Podaj swój adres e-mail, aby otrzymać nowy link aktywacyjny."
+
+#: templates/accounts/activation_failed.html:15
+#: templates/accounts/resend_activation.html:9
+msgid "Send a new link"
+msgstr "Wyślij nowy link"
+
+#: templates/accounts/email/activation_body.html:9
+#: templates/accounts/email/activation_body.txt:1
+#, python-format
+msgid "Hello %(name)s,"
+msgstr "Cześć %(name)s,"
+
+#: templates/accounts/email/activation_body.html:10
+#: templates/accounts/email/activation_body.txt:3
+#, python-format
+msgid ""
+"Thank you for signing up at %(site)s. To activate your account, confirm your"
+" e-mail address by opening this link:"
+msgstr ""
+"Dziękujemy za rejestrację w serwisie %(site)s. Aby aktywować konto, "
+"potwierdź swój adres e-mail, otwierając ten link:"
+
+#: templates/accounts/email/activation_body.html:12
+msgid "Confirm e-mail address"
+msgstr "Potwierdź adres e-mail"
+
+#: templates/accounts/email/activation_body.html:14
+msgid "If the button does not work, copy this address into your browser:"
+msgstr "Jeśli przycisk nie działa, skopiuj ten adres do przeglądarki:"
+
+#: templates/accounts/email/activation_body.html:15
+#: templates/accounts/email/activation_body.txt:7
+#: templates/accounts/signup_done.html:8
+#, python-format
+msgid "The link is valid for %(days)s day."
+msgid_plural "The link is valid for %(days)s days."
+msgstr[0] "Link jest ważny przez %(days)s dzień."
+msgstr[1] "Link jest ważny przez %(days)s dni."
+msgstr[2] "Link jest ważny przez %(days)s dni."
+
+#: templates/accounts/email/activation_body.html:16
+#: templates/accounts/email/activation_body.txt:9
+msgid "If you did not create an account, you can ignore this message."
+msgstr "Jeśli to nie Ty zakładałeś konto, zignoruj tę wiadomość."
+
+#: templates/accounts/email/activation_subject.txt:1
+#, python-format
+msgid "Confirm your e-mail address – %(site)s"
+msgstr "Potwierdź swój adres e-mail – %(site)s"
+
 #: templates/accounts/login.html:2 templates/accounts/login.html:5
 #: templates/accounts/login.html:10 templates/accounts/signup.html:11
 #: templates/base.html:28
 msgid "Log in"
 msgstr "Zaloguj się"
 
-#: templates/accounts/login.html:12
+#: templates/accounts/login.html:13
+#: templates/accounts/resend_activation.html:2
+#: templates/accounts/resend_activation.html:5
+#: templates/accounts/signup_done.html:13
+msgid "Send the activation link again"
+msgstr "Wyślij link aktywacyjny ponownie"
+
+#: templates/accounts/login.html:15
 msgid "No account yet?"
 msgstr "Nie masz jeszcze konta?"
 
-#: templates/accounts/login.html:12 templates/accounts/signup.html:2
+#: templates/accounts/login.html:15 templates/accounts/signup.html:2
 #: templates/accounts/signup.html:5 templates/base.html:29
 msgid "Sign up"
 msgstr "Zarejestruj się"
@@ -478,6 +588,32 @@ msgstr "Utwórz konto"
 #: templates/accounts/signup.html:11
 msgid "Already have an account?"
 msgstr "Masz już konto?"
+
+#: templates/accounts/signup_done.html:2 templates/accounts/signup_done.html:5
+msgid "Check your mailbox"
+msgstr "Sprawdź swoją skrzynkę"
+
+#: templates/accounts/signup_done.html:7
+#, python-format
+msgid ""
+"We have sent an activation link to <strong>%(email)s</strong>. Click it to "
+"confirm your e-mail address and activate your account."
+msgstr ""
+"Wysłaliśmy link aktywacyjny na adres <strong>%(email)s</strong>. Kliknij go,"
+" aby potwierdzić adres e-mail i aktywować konto."
+
+#: templates/accounts/signup_done.html:9
+msgid "Did not get the e-mail? Check the spam folder."
+msgstr "Nie dostałeś e-maila? Sprawdź folder spam."
+
+#: templates/accounts/signup_done.html:11
+#, python-format
+msgid ""
+"Your account <strong>%(email)s</strong> has been created, but the activation"
+" e-mail could not be sent. Request it again below."
+msgstr ""
+"Konto <strong>%(email)s</strong> zostało utworzone, ale nie udało się wysłać"
+" e-maila aktywacyjnego. Poproś o niego ponownie poniżej."
 
 #: templates/accounts/user_list.html:2 templates/accounts/user_list.html:4
 #: templates/base.html:19

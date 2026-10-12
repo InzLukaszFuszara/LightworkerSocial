@@ -1,0 +1,12 @@
+{% load i18n %}{% blocktranslate with name=user.display_name %}Hello {{ name }},{% endblocktranslate %}
+
+{% blocktranslate with site=site_name %}Thank you for signing up at {{ site }}. To activate your account, confirm your e-mail address by opening this link:{% endblocktranslate %}
+
+{{ activation_url }}
+
+{% blocktranslate count days=days %}The link is valid for {{ days }} day.{% plural %}The link is valid for {{ days }} days.{% endblocktranslate %}
+
+{% translate "If you did not create an account, you can ignore this message." %}
+
+-- 
+{{ site_name }}

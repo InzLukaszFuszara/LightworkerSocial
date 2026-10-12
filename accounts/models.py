@@ -52,6 +52,12 @@ class User(AbstractUser):
     )
     email = models.EmailField(_("e-mail address"), unique=True)
     bio = models.TextField(_("about me"), max_length=500, blank=True)
+    email_verified = models.BooleanField(
+        _("e-mail verified"),
+        default=False,
+        help_text=_("Set when the user confirms the address with the activation link."),
+    )
+    activation_sent_at = models.DateTimeField(_("activation e-mail sent at"), null=True, blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]

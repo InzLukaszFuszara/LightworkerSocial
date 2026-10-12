@@ -1,0 +1,22 @@
+{% load i18n %}<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:24px;background:#f0f8ff;font-family:Arial,Helvetica,sans-serif;color:#22404f;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+    <tr><td align="center">
+      <table role="presentation" width="560" cellspacing="0" cellpadding="0" style="max-width:560px;background:#ffffff;border-radius:14px;border-top:6px solid #7fd18f;">
+        <tr><td style="padding:28px 32px;">
+          <h1 style="margin:0 0 16px;font-size:22px;color:#1c5f87;">✦ {{ site_name }}</h1>
+          <p>{% blocktranslate with name=user.display_name %}Hello {{ name }},{% endblocktranslate %}</p>
+          <p>{% blocktranslate with site=site_name %}Thank you for signing up at {{ site }}. To activate your account, confirm your e-mail address by opening this link:{% endblocktranslate %}</p>
+          <p style="text-align:center;margin:28px 0;">
+            <a href="{{ activation_url }}" style="display:inline-block;padding:12px 28px;border-radius:999px;background:#6ec1ef;background:linear-gradient(90deg,#6ec1ef,#7fd18f);color:#ffffff;font-weight:bold;text-decoration:none;">{% translate "Confirm e-mail address" %}</a>
+          </p>
+          <p style="font-size:13px;color:#5d7a87;">{% translate "If the button does not work, copy this address into your browser:" %}<br><a href="{{ activation_url }}" style="color:#2b8cc4;word-break:break-all;">{{ activation_url }}</a></p>
+          <p style="font-size:13px;color:#5d7a87;">{% blocktranslate count days=days %}The link is valid for {{ days }} day.{% plural %}The link is valid for {{ days }} days.{% endblocktranslate %}
+            {% translate "If you did not create an account, you can ignore this message." %}</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
