@@ -163,7 +163,6 @@ msgid "slug"
 msgstr "slug (adres)"
 
 #: posts/models.py:19
-#| msgid "description (Polish)"
 msgid "description"
 msgstr "opis"
 
@@ -450,12 +449,3 @@ msgstr "Tablica"
 #: templates/posts/wall.html:20
 msgid "This wall is still empty."
 msgstr "Ta tablica jest jeszcze pusta."
-
-#~ msgid "name (Polish)"
-#~ msgstr "nazwa (polska)"
-
-#~ msgid "name (English)"
-#~ msgstr "nazwa (angielska)"
-
-#~ msgid "description (English)"
-#~ msgstr "opis (angielski)"
