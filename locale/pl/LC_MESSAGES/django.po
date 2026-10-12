@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-12 15:14+0200\n"
+"POT-Creation-Date: 2026-10-12 15:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,7 +70,8 @@ msgstr "adres e-mail"
 msgid "about me"
 msgstr "o mnie"
 
-#: accounts/models.py:62
+#: accounts/models.py:62 chat/models.py:28 chat/models.py:153
+#: chat/models.py:269
 msgid "user"
 msgstr "użytkownik"
 
@@ -86,11 +87,243 @@ msgstr "Witaj! Twoje konto zostało utworzone."
 msgid "Your profile has been updated."
 msgstr "Twój profil został zaktualizowany."
 
-#: config/settings.py:87
+#: chat/apps.py:8 templates/chat/messenger.html:3
+#: templates/chat/messenger.html:11
+msgid "Messenger"
+msgstr "Komunikator"
+
+#: chat/forms.py:13 templates/chat/messenger.html:109
+msgid "Message"
+msgstr "Wiadomość"
+
+#: chat/forms.py:15
+msgid "Image"
+msgstr "Zdjęcie"
+
+#: chat/forms.py:26
+msgid "Write a message or attach an image."
+msgstr "Napisz wiadomość lub dołącz zdjęcie."
+
+#: chat/forms.py:31 templates/chat/messenger.html:44
+msgid "Group name"
+msgstr "Nazwa grupy"
+
+#: chat/forms.py:35 templates/chat/messenger.html:87
+msgid "Room name"
+msgstr "Nazwa pokoju"
+
+#: chat/forms.py:40
+msgid "Minutes"
+msgstr "Minuty"
+
+#: chat/models.py:21 templates/chat/messenger.html:16
+#: templates/chat/messenger.html:32
+msgid "Available"
+msgstr "Dostępny"
+
+#: chat/models.py:21 templates/chat/messenger.html:17
+#: templates/chat/messenger.html:36
+msgid "Be right back"
+msgstr "Zaraz wracam"
+
+#: chat/models.py:30 chat/models.py:271
+msgid "status"
+msgstr "status"
+
+#: chat/models.py:31
+msgid "last seen"
+msgstr "ostatnio widziany"
+
+#: chat/models.py:34 chat/models.py:35
+msgid "presence"
+msgstr "obecność"
+
+#: chat/models.py:73
+msgid "Direct conversation"
+msgstr "Rozmowa prywatna"
+
+#: chat/models.py:73 templates/chat/group_link.html:5
+msgid "Group conversation"
+msgstr "Rozmowa grupowa"
+
+#: chat/models.py:75
+msgid "type"
+msgstr "typ"
+
+#: chat/models.py:76 chat/models.py:203 posts/models.py:17 posts/models.py:35
+msgid "name"
+msgstr "nazwa"
+
+#: chat/models.py:83
+msgid "owner"
+msgstr "właściciel"
+
+#: chat/models.py:85
+msgid "invite token"
+msgstr "token zaproszenia"
+
+#: chat/models.py:86 chat/models.py:208 chat/models.py:242 chat/models.py:272
+#: posts/models.py:79
+msgid "created at"
+msgstr "data dodania"
+
+#: chat/models.py:94 chat/models.py:147 chat/models.py:201 chat/models.py:266
+msgid "conversation"
+msgstr "rozmowa"
+
+#: chat/models.py:95
+msgid "conversations"
+msgstr "rozmowy"
+
+#: chat/models.py:114
+msgid "Conversation"
+msgstr "Rozmowa"
+
+#: chat/models.py:144
+msgid "Owner"
+msgstr "Założyciel"
+
+#: chat/models.py:144
+msgid "Member"
+msgstr "Uczestnik"
+
+#: chat/models.py:155
+msgid "role"
+msgstr "rola"
+
+#: chat/models.py:156
+msgid "muted until"
+msgstr "wyciszony do"
+
+#: chat/models.py:158
+msgid "joined at"
+msgstr "data dołączenia"
+
+#: chat/models.py:161
+msgid "member"
+msgstr "uczestnik"
+
+#: chat/models.py:162
+msgid "members"
+msgstr "uczestnicy"
+
+#: chat/models.py:204
+msgid "default room"
+msgstr "pokój domyślny"
+
+#: chat/models.py:211 chat/models.py:228
+msgid "room"
+msgstr "pokój"
+
+#: chat/models.py:212
+msgid "rooms"
+msgstr "pokoje"
+
+#: chat/models.py:220
+msgid "General"
+msgstr "Ogólny"
+
+#: chat/models.py:233 posts/models.py:63
+msgid "author"
+msgstr "autor"
+
+#: chat/models.py:236
+msgid "text"
+msgstr "tekst"
+
+#: chat/models.py:241 posts/models.py:127 posts/models.py:133
+msgid "image"
+msgstr "zdjęcie"
+
+#: chat/models.py:245
+msgid "message"
+msgstr "wiadomość"
+
+#: chat/models.py:246
+msgid "messages"
+msgstr "wiadomości"
+
+#: chat/models.py:263
+msgid "Pending"
+msgstr "Oczekuje"
+
+#: chat/models.py:263
+msgid "Approved"
+msgstr "Zaakceptowana"
+
+#: chat/models.py:263
+msgid "Rejected"
+msgstr "Odrzucona"
+
+#: chat/models.py:273
+msgid "decided at"
+msgstr "data decyzji"
+
+#: chat/models.py:276
+msgid "join request"
+msgstr "prośba o dołączenie"
+
+#: chat/models.py:277
+msgid "join requests"
+msgstr "prośby o dołączenie"
+
+#: chat/views.py:34
+msgid "You must be logged in."
+msgstr "Musisz być zalogowany."
+
+#: chat/views.py:49
+msgid "Invalid data."
+msgstr "Nieprawidłowe dane."
+
+#: chat/views.py:73
+msgid "Only the group owner can do this."
+msgstr "Tylko założyciel grupy może to zrobić."
+
+#: chat/views.py:228
+msgid "You cannot start a conversation with yourself."
+msgstr "Nie możesz rozpocząć rozmowy z samym sobą."
+
+#: chat/views.py:255
+msgid "You cannot leave a direct conversation."
+msgstr "Nie można opuścić rozmowy prywatnej."
+
+#: chat/views.py:257
+msgid "The owner cannot leave the group."
+msgstr "Założyciel nie może opuścić grupy."
+
+#: chat/views.py:279
+msgid "Method not allowed."
+msgstr "Niedozwolona metoda."
+
+#: chat/views.py:304
+msgid "You are muted in this conversation."
+msgstr "Jesteś wyciszony w tej rozmowie."
+
+#: chat/views.py:360
+msgid "User not found."
+msgstr "Nie znaleziono użytkownika."
+
+#: chat/views.py:363
+msgid "This user is already a member."
+msgstr "Ten użytkownik jest już uczestnikiem."
+
+#: chat/views.py:384
+msgid "The owner cannot be removed."
+msgstr "Nie można usunąć założyciela."
+
+#: chat/views.py:396
+msgid "The owner cannot be muted."
+msgstr "Nie można wyciszyć założyciela."
+
+#: chat/views.py:436
+msgid "Your request has been sent. The group owner has to approve it."
+msgstr "Prośba została wysłana. Założyciel grupy musi ją zaakceptować."
+
+#: config/settings.py:89
 msgid "Polish"
 msgstr "Polski"
 
-#: config/settings.py:88
+#: config/settings.py:90
 msgid "English"
 msgstr "Angielski"
 
@@ -154,10 +387,6 @@ msgstr ""
 "Plik %(name)s ma nieobsługiwany format. Dozwolone formaty: JPG, PNG, GIF, "
 "WebP."
 
-#: posts/models.py:17 posts/models.py:35
-msgid "name"
-msgstr "nazwa"
-
 #: posts/models.py:18
 msgid "slug"
 msgstr "slug (adres)"
@@ -186,17 +415,9 @@ msgstr "hashtag"
 msgid "hashtags"
 msgstr "hashtagi"
 
-#: posts/models.py:63
-msgid "author"
-msgstr "autor"
-
 #: posts/models.py:72
 msgid "content"
 msgstr "treść"
-
-#: posts/models.py:79
-msgid "created at"
-msgstr "data dodania"
 
 #: posts/models.py:80
 msgid "updated at"
@@ -209,10 +430,6 @@ msgstr "wpis"
 #: posts/models.py:86
 msgid "posts"
 msgstr "wpisy"
-
-#: posts/models.py:127 posts/models.py:133
-msgid "image"
-msgstr "zdjęcie"
 
 #: posts/models.py:129
 msgid "thumbnail"
@@ -232,7 +449,7 @@ msgstr "Wpis został usunięty."
 
 #: templates/accounts/login.html:2 templates/accounts/login.html:5
 #: templates/accounts/login.html:10 templates/accounts/signup.html:11
-#: templates/base.html:26
+#: templates/base.html:28
 msgid "Log in"
 msgstr "Zaloguj się"
 
@@ -241,12 +458,12 @@ msgid "No account yet?"
 msgstr "Nie masz jeszcze konta?"
 
 #: templates/accounts/login.html:12 templates/accounts/signup.html:2
-#: templates/accounts/signup.html:5 templates/base.html:27
+#: templates/accounts/signup.html:5 templates/base.html:29
 msgid "Sign up"
 msgstr "Zarejestruj się"
 
 #: templates/accounts/profile_form.html:2
-#: templates/accounts/profile_form.html:5 templates/posts/wall.html:15
+#: templates/accounts/profile_form.html:5 templates/posts/wall.html:20
 msgid "Edit profile"
 msgstr "Edytuj profil"
 
@@ -263,7 +480,7 @@ msgid "Already have an account?"
 msgstr "Masz już konto?"
 
 #: templates/accounts/user_list.html:2 templates/accounts/user_list.html:4
-#: templates/base.html:17
+#: templates/base.html:19
 msgid "Profiles"
 msgstr "Profile"
 
@@ -271,35 +488,165 @@ msgstr "Profile"
 msgid "No users yet."
 msgstr "Brak użytkowników."
 
-#: templates/base.html:14
+#: templates/base.html:16
 msgid "Main navigation"
 msgstr "Główna nawigacja"
 
-#: templates/base.html:15
+#: templates/base.html:17
 msgid "Home"
 msgstr "Strona główna"
 
-#: templates/base.html:16 templates/posts/forum.html:2
+#: templates/base.html:18 templates/posts/forum.html:2
 #: templates/posts/forum.html:5 templates/posts/forum_topic.html:4
 msgid "Forum"
 msgstr "Forum"
 
-#: templates/base.html:19
+#: templates/base.html:21
 msgid "My wall"
 msgstr "Moja tablica"
 
-#: templates/base.html:20 templates/posts/post_form.html:2
+#: templates/base.html:22 templates/posts/post_form.html:2
 #: templates/posts/post_form.html:5
 msgid "New post"
 msgstr "Nowy wpis"
 
-#: templates/base.html:23
+#: templates/base.html:25
 msgid "Log out"
 msgstr "Wyloguj się"
 
-#: templates/includes/lightbox.html:4
+#: templates/chat/group_link.html:8
+#, python-format
+msgid "Created by %(owner)s"
+msgstr "Założyciel: %(owner)s"
+
+#: templates/chat/group_link.html:9
+#, python-format
+msgid "%(counter)s member"
+msgid_plural "%(counter)s members"
+msgstr[0] "%(counter)s uczestnik"
+msgstr[1] "%(counter)s uczestników"
+msgstr[2] "%(counter)s uczestników"
+
+#: templates/chat/group_link.html:12
+msgid "You are a member of this group."
+msgstr "Jesteś uczestnikiem tej grupy."
+
+#: templates/chat/group_link.html:13
+msgid "Open the conversation"
+msgstr "Otwórz rozmowę"
+
+#: templates/chat/group_link.html:15
+msgid "Your request to join is waiting for the owner's approval."
+msgstr "Twoja prośba o dołączenie czeka na akceptację założyciela."
+
+#: templates/chat/group_link.html:18
+msgid "Your previous request was rejected. You can ask again."
+msgstr "Twoja poprzednia prośba została odrzucona. Możesz poprosić ponownie."
+
+#: templates/chat/group_link.html:22
+msgid "Ask to join"
+msgstr "Poproś o dołączenie"
+
+#: templates/chat/messenger.html:5
+msgid "Show or hide the messenger"
+msgstr "Pokaż lub ukryj komunikator"
+
+#: templates/chat/messenger.html:13
+msgid "My status"
+msgstr "Mój status"
+
+#: templates/chat/messenger.html:22
+msgid "Search users by nick"
+msgstr "Szukaj użytkowników po nicku"
+
+#: templates/chat/messenger.html:24 templates/chat/messenger.html:81
+msgid "Search users by nick…"
+msgstr "Szukaj po nicku…"
+
+#: templates/chat/messenger.html:27
+msgid "All users"
+msgstr "Wszyscy użytkownicy"
+
+#: templates/chat/messenger.html:41
+msgid "Conversations"
+msgstr "Rozmowy"
+
+#: templates/chat/messenger.html:46
+msgid "New group name"
+msgstr "Nazwa nowej grupy"
+
+#: templates/chat/messenger.html:47
+msgid "Create group"
+msgstr "Utwórz grupę"
+
+#: templates/chat/messenger.html:58
+msgid "Minimize or restore"
+msgstr "Zwiń lub rozwiń"
+
+#: templates/chat/messenger.html:60
+msgid "Group settings"
+msgstr "Ustawienia grupy"
+
+#: templates/chat/messenger.html:61 templates/includes/lightbox.html:4
 msgid "Close"
 msgstr "Zamknij"
+
+#: templates/chat/messenger.html:63
+msgid "Rooms"
+msgstr "Pokoje"
+
+#: templates/chat/messenger.html:67 templates/chat/messenger.html:69
+msgid "Group link"
+msgstr "Link do grupy"
+
+#: templates/chat/messenger.html:70
+msgid "Copy"
+msgstr "Kopiuj"
+
+#: templates/chat/messenger.html:72
+msgid "Anyone with this link can ask to join; the owner approves the request."
+msgstr ""
+"Każdy z tym linkiem może poprosić o dołączenie; założyciel akceptuje prośbę."
+
+#: templates/chat/messenger.html:75
+msgid "Join requests"
+msgstr "Prośby o dołączenie"
+
+#: templates/chat/messenger.html:79 templates/chat/messenger.html:81
+msgid "Add a member"
+msgstr "Dodaj uczestnika"
+
+#: templates/chat/messenger.html:85
+msgid "New room"
+msgstr "Nowy pokój"
+
+#: templates/chat/messenger.html:88
+msgid "Add room"
+msgstr "Dodaj pokój"
+
+#: templates/chat/messenger.html:92
+msgid "Members"
+msgstr "Uczestnicy"
+
+#: templates/chat/messenger.html:94
+msgid "Leave the group"
+msgstr "Opuść grupę"
+
+#: templates/chat/messenger.html:103
+msgid "Attach an image (JPG, PNG, GIF, WebP, max. 5 MiB)"
+msgstr "Dołącz zdjęcie (JPG, PNG, GIF, WebP, maks. 5 MiB)"
+
+#: templates/chat/messenger.html:105
+msgid "Attach an image"
+msgstr "Dołącz zdjęcie"
+
+#: templates/chat/messenger.html:109
+msgid "Write a message…"
+msgstr "Napisz wiadomość…"
+
+#: templates/chat/messenger.html:110
+msgid "Send"
+msgstr "Wyślij"
 
 #: templates/includes/lightbox.html:5
 msgid "Post"
@@ -439,13 +786,17 @@ msgstr[1] "%(counter)s wpisy"
 msgstr[2] "%(counter)s wpisów"
 
 #: templates/posts/wall.html:14
+msgid "Send a message"
+msgstr "Wyślij wiadomość"
+
+#: templates/posts/wall.html:19
 msgid "Add a post to your wall"
 msgstr "Dodaj wpis do swojej tablicy"
 
-#: templates/posts/wall.html:19
+#: templates/posts/wall.html:24
 msgid "Wall"
 msgstr "Tablica"
 
-#: templates/posts/wall.html:20
+#: templates/posts/wall.html:25
 msgid "This wall is still empty."
 msgstr "Ta tablica jest jeszcze pusta."

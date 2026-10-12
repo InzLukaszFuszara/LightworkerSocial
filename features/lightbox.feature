@@ -13,3 +13,4 @@ Feature: Lightbox in the browser
     And the lightbox should contain "Full content"
     When I press Escape in the browser
     Then the lightbox should be hidden
+    And there should be no JavaScript errors

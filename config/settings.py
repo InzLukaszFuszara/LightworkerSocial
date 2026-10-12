@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "behave_django",
     "accounts",
     "posts",
+    "chat",
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,7 @@ TEMPLATES = [
                 "django.template.context_processors.i18n",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "chat.context_processors.chat",
             ],
         },
     },
@@ -108,3 +110,12 @@ POST_IMAGE_MAX_BYTES = 5 * 1024 * 1024  # 5 MiB
 POST_MAX_IMAGES = 20
 POSTS_PER_PAGE = 12  # multiple of 3 -> full rows of tiles
 THUMBNAIL_SIZE = (480, 480)
+
+# Messenger.
+CHAT_MESSAGE_MAX_LENGTH = 250
+CHAT_IMAGE_MAX_BYTES = 5 * 1024 * 1024  # 5 MiB
+CHAT_ONLINE_TIMEOUT = 90  # seconds without a heartbeat before a user is offline
+CHAT_HEARTBEAT_SECONDS = 25
+CHAT_POLL_SECONDS = 3
+CHAT_MUTE_CHOICES = [5, 15, 60, 1440]  # minutes offered in the UI
+CHAT_MAX_MUTE_MINUTES = 7 * 24 * 60

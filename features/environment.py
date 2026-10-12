@@ -62,4 +62,6 @@ def _start_browser(context, scenario):
     context.browser = context.playwright.chromium.launch(
         executable_path=os.environ.get("CHROMIUM_PATH") or _default_chromium()
     )
-    context.page = context.browser.new_page()
+    context.page = context.browser.new_page(locale="pl-PL")
+    context.console_errors = []
+    context.page.on("pageerror", lambda exc: context.console_errors.append(str(exc)))

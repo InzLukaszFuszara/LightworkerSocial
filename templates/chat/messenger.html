@@ -1,0 +1,117 @@
+{% load i18n static %}
+{{ chat_config|json_script:"chat-config" }}
+<aside id="chat-panel" class="chat-panel" aria-label="{% translate 'Messenger' %}">
+  <button type="button" class="chat-panel-toggle" aria-controls="chat-panel-inner" aria-expanded="true"
+          title="{% translate 'Show or hide the messenger' %}">
+    <span aria-hidden="true">💬</span>
+    <span class="chat-badge chat-total-unread" hidden></span>
+  </button>
+  <div class="chat-panel-inner" id="chat-panel-inner">
+    <header class="chat-panel-header">
+      <h2>{% translate "Messenger" %}</h2>
+      <label class="chat-status">
+        <span class="visually-hidden">{% translate "My status" %}</span>
+        <span class="chat-dot" data-status-dot></span>
+        <select class="chat-status-select" name="status">
+          <option value="available">{% translate "Available" %}</option>
+          <option value="away">{% translate "Be right back" %}</option>
+        </select>
+      </label>
+    </header>
+
+    <label class="visually-hidden" for="chat-search">{% translate "Search users by nick" %}</label>
+    <input id="chat-search" class="chat-search" type="search" autocomplete="off"
+           placeholder="{% translate 'Search users by nick…' %}">
+
+    <section class="chat-section chat-search-results" hidden>
+      <h3>{% translate "All users" %}</h3>
+      <ul class="chat-list" data-list="search"></ul>
+    </section>
+
+    <section class="chat-section">
+      <h3><span class="chat-dot available"></span> {% translate "Available" %} <span class="chat-count" data-count="available">0</span></h3>
+      <ul class="chat-list" data-list="available"></ul>
+    </section>
+    <section class="chat-section">
+      <h3><span class="chat-dot away"></span> {% translate "Be right back" %} <span class="chat-count" data-count="away">0</span></h3>
+      <ul class="chat-list" data-list="away"></ul>
+    </section>
+
+    <section class="chat-section">
+      <h3>{% translate "Conversations" %}</h3>
+      <ul class="chat-list" data-list="conversations"></ul>
+      <form class="chat-new-group">
+        <label class="visually-hidden" for="chat-new-group-name">{% translate "Group name" %}</label>
+        <input id="chat-new-group-name" name="name" maxlength="80" required
+               placeholder="{% translate 'New group name' %}">
+        <button type="submit" class="btn btn-small">+ {% translate "Create group" %}</button>
+      </form>
+    </section>
+  </div>
+</aside>
+
+<div id="chat-dock" class="chat-dock" aria-live="polite"></div>
+
+<template id="chat-bubble-template">
+  <section class="chat-bubble" role="dialog">
+    <header class="chat-bubble-header">
+      <button type="button" class="chat-bubble-title" data-action="toggle" title="{% translate 'Minimize or restore' %}"></button>
+      <span class="chat-badge chat-bubble-unread" hidden></span>
+      <button type="button" class="chat-icon" data-action="manage" title="{% translate 'Group settings' %}" hidden>⚙</button>
+      <button type="button" class="chat-icon" data-action="close" title="{% translate 'Close' %}">×</button>
+    </header>
+    <nav class="chat-rooms" aria-label="{% translate 'Rooms' %}" hidden></nav>
+
+    <div class="chat-manage" hidden>
+      <section class="chat-manage-section">
+        <h4>{% translate "Group link" %}</h4>
+        <div class="chat-inline">
+          <input type="text" class="chat-invite-url" readonly aria-label="{% translate 'Group link' %}">
+          <button type="button" class="btn btn-small" data-action="copy-link">{% translate "Copy" %}</button>
+        </div>
+        <p class="chat-hint">{% translate "Anyone with this link can ask to join; the owner approves the request." %}</p>
+      </section>
+      <section class="chat-manage-section" data-owner-only>
+        <h4>{% translate "Join requests" %}</h4>
+        <ul class="chat-requests"></ul>
+      </section>
+      <section class="chat-manage-section" data-owner-only>
+        <h4>{% translate "Add a member" %}</h4>
+        <input type="search" class="chat-member-search" autocomplete="off"
+               placeholder="{% translate 'Search users by nick…' %}" aria-label="{% translate 'Add a member' %}">
+        <ul class="chat-member-search-results"></ul>
+      </section>
+      <section class="chat-manage-section" data-owner-only>
+        <h4>{% translate "New room" %}</h4>
+        <form class="chat-inline chat-new-room">
+          <input type="text" name="name" maxlength="40" required placeholder="{% translate 'Room name' %}" aria-label="{% translate 'Room name' %}">
+          <button type="submit" class="btn btn-small">+ {% translate "Add room" %}</button>
+        </form>
+      </section>
+      <section class="chat-manage-section">
+        <h4>{% translate "Members" %}</h4>
+        <ul class="chat-members"></ul>
+        <button type="button" class="btn btn-small btn-danger" data-action="leave" data-member-only>{% translate "Leave the group" %}</button>
+      </section>
+    </div>
+
+    <ol class="chat-messages"></ol>
+    <p class="chat-muted-notice" hidden></p>
+    <p class="chat-error" role="alert" hidden></p>
+    <div class="chat-attachment-preview" hidden></div>
+    <form class="chat-composer" enctype="multipart/form-data">
+      <label class="chat-attach" title="{% translate 'Attach an image (JPG, PNG, GIF, WebP, max. 5 MiB)' %}">
+        <span aria-hidden="true">📎</span>
+        <span class="visually-hidden">{% translate "Attach an image" %}</span>
+        <input type="file" name="image" accept="image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp">
+      </label>
+      <input type="text" name="text" maxlength="{{ chat_config.maxLength }}" autocomplete="off"
+             placeholder="{% translate 'Write a message…' %}" aria-label="{% translate 'Message' %}">
+      <button type="submit" class="chat-send" title="{% translate 'Send' %}">➤</button>
+    </form>
+    <small class="chat-counter" aria-live="off"></small>
+  </section>
+</template>
+
+<script src="{% url 'javascript-catalog' %}"></script>
+<script src="{% static 'js/chat.js' %}" defer></script>

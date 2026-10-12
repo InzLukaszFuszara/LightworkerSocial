@@ -9,6 +9,11 @@
       · {% blocktranslate count counter=page_obj.paginator.count %}{{ counter }} post{% plural %}{{ counter }} posts{% endblocktranslate %}</p>
     {% if profile.bio %}<p class="bio">{{ profile.bio|linebreaksbr }}</p>{% endif %}
   </div>
+  {% if user.is_authenticated and not is_owner %}
+    <div class="profile-actions">
+      <button type="button" class="btn" data-chat-direct="{{ profile.username }}">💬 {% translate "Send a message" %}</button>
+    </div>
+  {% endif %}
   {% if is_owner %}
     <div class="profile-actions">
       <a class="btn" href="{% url 'posts:create' %}">+ {% translate "Add a post to your wall" %}</a>

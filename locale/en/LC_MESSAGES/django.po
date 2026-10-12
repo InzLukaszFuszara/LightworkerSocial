@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-12 15:14+0200\n"
+"POT-Creation-Date: 2026-10-12 15:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,7 +70,8 @@ msgstr ""
 msgid "about me"
 msgstr ""
 
-#: accounts/models.py:62
+#: accounts/models.py:62 chat/models.py:28 chat/models.py:153
+#: chat/models.py:269
 msgid "user"
 msgstr ""
 
@@ -86,11 +87,243 @@ msgstr ""
 msgid "Your profile has been updated."
 msgstr ""
 
-#: config/settings.py:87
+#: chat/apps.py:8 templates/chat/messenger.html:3
+#: templates/chat/messenger.html:11
+msgid "Messenger"
+msgstr ""
+
+#: chat/forms.py:13 templates/chat/messenger.html:109
+msgid "Message"
+msgstr ""
+
+#: chat/forms.py:15
+msgid "Image"
+msgstr ""
+
+#: chat/forms.py:26
+msgid "Write a message or attach an image."
+msgstr ""
+
+#: chat/forms.py:31 templates/chat/messenger.html:44
+msgid "Group name"
+msgstr ""
+
+#: chat/forms.py:35 templates/chat/messenger.html:87
+msgid "Room name"
+msgstr ""
+
+#: chat/forms.py:40
+msgid "Minutes"
+msgstr ""
+
+#: chat/models.py:21 templates/chat/messenger.html:16
+#: templates/chat/messenger.html:32
+msgid "Available"
+msgstr ""
+
+#: chat/models.py:21 templates/chat/messenger.html:17
+#: templates/chat/messenger.html:36
+msgid "Be right back"
+msgstr ""
+
+#: chat/models.py:30 chat/models.py:271
+msgid "status"
+msgstr ""
+
+#: chat/models.py:31
+msgid "last seen"
+msgstr ""
+
+#: chat/models.py:34 chat/models.py:35
+msgid "presence"
+msgstr ""
+
+#: chat/models.py:73
+msgid "Direct conversation"
+msgstr ""
+
+#: chat/models.py:73 templates/chat/group_link.html:5
+msgid "Group conversation"
+msgstr ""
+
+#: chat/models.py:75
+msgid "type"
+msgstr ""
+
+#: chat/models.py:76 chat/models.py:203 posts/models.py:17 posts/models.py:35
+msgid "name"
+msgstr ""
+
+#: chat/models.py:83
+msgid "owner"
+msgstr ""
+
+#: chat/models.py:85
+msgid "invite token"
+msgstr ""
+
+#: chat/models.py:86 chat/models.py:208 chat/models.py:242 chat/models.py:272
+#: posts/models.py:79
+msgid "created at"
+msgstr ""
+
+#: chat/models.py:94 chat/models.py:147 chat/models.py:201 chat/models.py:266
+msgid "conversation"
+msgstr ""
+
+#: chat/models.py:95
+msgid "conversations"
+msgstr ""
+
+#: chat/models.py:114
+msgid "Conversation"
+msgstr ""
+
+#: chat/models.py:144
+msgid "Owner"
+msgstr ""
+
+#: chat/models.py:144
+msgid "Member"
+msgstr ""
+
+#: chat/models.py:155
+msgid "role"
+msgstr ""
+
+#: chat/models.py:156
+msgid "muted until"
+msgstr ""
+
+#: chat/models.py:158
+msgid "joined at"
+msgstr ""
+
+#: chat/models.py:161
+msgid "member"
+msgstr ""
+
+#: chat/models.py:162
+msgid "members"
+msgstr ""
+
+#: chat/models.py:204
+msgid "default room"
+msgstr ""
+
+#: chat/models.py:211 chat/models.py:228
+msgid "room"
+msgstr ""
+
+#: chat/models.py:212
+msgid "rooms"
+msgstr ""
+
+#: chat/models.py:220
+msgid "General"
+msgstr ""
+
+#: chat/models.py:233 posts/models.py:63
+msgid "author"
+msgstr ""
+
+#: chat/models.py:236
+msgid "text"
+msgstr ""
+
+#: chat/models.py:241 posts/models.py:127 posts/models.py:133
+msgid "image"
+msgstr ""
+
+#: chat/models.py:245
+msgid "message"
+msgstr ""
+
+#: chat/models.py:246
+msgid "messages"
+msgstr ""
+
+#: chat/models.py:263
+msgid "Pending"
+msgstr ""
+
+#: chat/models.py:263
+msgid "Approved"
+msgstr ""
+
+#: chat/models.py:263
+msgid "Rejected"
+msgstr ""
+
+#: chat/models.py:273
+msgid "decided at"
+msgstr ""
+
+#: chat/models.py:276
+msgid "join request"
+msgstr ""
+
+#: chat/models.py:277
+msgid "join requests"
+msgstr ""
+
+#: chat/views.py:34
+msgid "You must be logged in."
+msgstr ""
+
+#: chat/views.py:49
+msgid "Invalid data."
+msgstr ""
+
+#: chat/views.py:73
+msgid "Only the group owner can do this."
+msgstr ""
+
+#: chat/views.py:228
+msgid "You cannot start a conversation with yourself."
+msgstr ""
+
+#: chat/views.py:255
+msgid "You cannot leave a direct conversation."
+msgstr ""
+
+#: chat/views.py:257
+msgid "The owner cannot leave the group."
+msgstr ""
+
+#: chat/views.py:279
+msgid "Method not allowed."
+msgstr ""
+
+#: chat/views.py:304
+msgid "You are muted in this conversation."
+msgstr ""
+
+#: chat/views.py:360
+msgid "User not found."
+msgstr ""
+
+#: chat/views.py:363
+msgid "This user is already a member."
+msgstr ""
+
+#: chat/views.py:384
+msgid "The owner cannot be removed."
+msgstr ""
+
+#: chat/views.py:396
+msgid "The owner cannot be muted."
+msgstr ""
+
+#: chat/views.py:436
+msgid "Your request has been sent. The group owner has to approve it."
+msgstr ""
+
+#: config/settings.py:89
 msgid "Polish"
 msgstr ""
 
-#: config/settings.py:88
+#: config/settings.py:90
 msgid "English"
 msgstr ""
 
@@ -150,10 +383,6 @@ msgid ""
 "WebP."
 msgstr ""
 
-#: posts/models.py:17 posts/models.py:35
-msgid "name"
-msgstr ""
-
 #: posts/models.py:18
 msgid "slug"
 msgstr ""
@@ -182,16 +411,8 @@ msgstr ""
 msgid "hashtags"
 msgstr ""
 
-#: posts/models.py:63
-msgid "author"
-msgstr ""
-
 #: posts/models.py:72
 msgid "content"
-msgstr ""
-
-#: posts/models.py:79
-msgid "created at"
 msgstr ""
 
 #: posts/models.py:80
@@ -204,10 +425,6 @@ msgstr ""
 
 #: posts/models.py:86
 msgid "posts"
-msgstr ""
-
-#: posts/models.py:127 posts/models.py:133
-msgid "image"
 msgstr ""
 
 #: posts/models.py:129
@@ -228,7 +445,7 @@ msgstr ""
 
 #: templates/accounts/login.html:2 templates/accounts/login.html:5
 #: templates/accounts/login.html:10 templates/accounts/signup.html:11
-#: templates/base.html:26
+#: templates/base.html:28
 msgid "Log in"
 msgstr ""
 
@@ -237,12 +454,12 @@ msgid "No account yet?"
 msgstr ""
 
 #: templates/accounts/login.html:12 templates/accounts/signup.html:2
-#: templates/accounts/signup.html:5 templates/base.html:27
+#: templates/accounts/signup.html:5 templates/base.html:29
 msgid "Sign up"
 msgstr ""
 
 #: templates/accounts/profile_form.html:2
-#: templates/accounts/profile_form.html:5 templates/posts/wall.html:15
+#: templates/accounts/profile_form.html:5 templates/posts/wall.html:20
 msgid "Edit profile"
 msgstr ""
 
@@ -259,7 +476,7 @@ msgid "Already have an account?"
 msgstr ""
 
 #: templates/accounts/user_list.html:2 templates/accounts/user_list.html:4
-#: templates/base.html:17
+#: templates/base.html:19
 msgid "Profiles"
 msgstr ""
 
@@ -267,34 +484,162 @@ msgstr ""
 msgid "No users yet."
 msgstr ""
 
-#: templates/base.html:14
+#: templates/base.html:16
 msgid "Main navigation"
 msgstr ""
 
-#: templates/base.html:15
+#: templates/base.html:17
 msgid "Home"
 msgstr ""
 
-#: templates/base.html:16 templates/posts/forum.html:2
+#: templates/base.html:18 templates/posts/forum.html:2
 #: templates/posts/forum.html:5 templates/posts/forum_topic.html:4
 msgid "Forum"
 msgstr ""
 
-#: templates/base.html:19
+#: templates/base.html:21
 msgid "My wall"
 msgstr ""
 
-#: templates/base.html:20 templates/posts/post_form.html:2
+#: templates/base.html:22 templates/posts/post_form.html:2
 #: templates/posts/post_form.html:5
 msgid "New post"
 msgstr ""
 
-#: templates/base.html:23
+#: templates/base.html:25
 msgid "Log out"
 msgstr ""
 
-#: templates/includes/lightbox.html:4
+#: templates/chat/group_link.html:8
+#, python-format
+msgid "Created by %(owner)s"
+msgstr ""
+
+#: templates/chat/group_link.html:9
+#, python-format
+msgid "%(counter)s member"
+msgid_plural "%(counter)s members"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/chat/group_link.html:12
+msgid "You are a member of this group."
+msgstr ""
+
+#: templates/chat/group_link.html:13
+msgid "Open the conversation"
+msgstr ""
+
+#: templates/chat/group_link.html:15
+msgid "Your request to join is waiting for the owner's approval."
+msgstr ""
+
+#: templates/chat/group_link.html:18
+msgid "Your previous request was rejected. You can ask again."
+msgstr ""
+
+#: templates/chat/group_link.html:22
+msgid "Ask to join"
+msgstr ""
+
+#: templates/chat/messenger.html:5
+msgid "Show or hide the messenger"
+msgstr ""
+
+#: templates/chat/messenger.html:13
+msgid "My status"
+msgstr ""
+
+#: templates/chat/messenger.html:22
+msgid "Search users by nick"
+msgstr ""
+
+#: templates/chat/messenger.html:24 templates/chat/messenger.html:81
+msgid "Search users by nick…"
+msgstr ""
+
+#: templates/chat/messenger.html:27
+msgid "All users"
+msgstr ""
+
+#: templates/chat/messenger.html:41
+msgid "Conversations"
+msgstr ""
+
+#: templates/chat/messenger.html:46
+msgid "New group name"
+msgstr ""
+
+#: templates/chat/messenger.html:47
+msgid "Create group"
+msgstr ""
+
+#: templates/chat/messenger.html:58
+msgid "Minimize or restore"
+msgstr ""
+
+#: templates/chat/messenger.html:60
+msgid "Group settings"
+msgstr ""
+
+#: templates/chat/messenger.html:61 templates/includes/lightbox.html:4
 msgid "Close"
+msgstr ""
+
+#: templates/chat/messenger.html:63
+msgid "Rooms"
+msgstr ""
+
+#: templates/chat/messenger.html:67 templates/chat/messenger.html:69
+msgid "Group link"
+msgstr ""
+
+#: templates/chat/messenger.html:70
+msgid "Copy"
+msgstr ""
+
+#: templates/chat/messenger.html:72
+msgid "Anyone with this link can ask to join; the owner approves the request."
+msgstr ""
+
+#: templates/chat/messenger.html:75
+msgid "Join requests"
+msgstr ""
+
+#: templates/chat/messenger.html:79 templates/chat/messenger.html:81
+msgid "Add a member"
+msgstr ""
+
+#: templates/chat/messenger.html:85
+msgid "New room"
+msgstr ""
+
+#: templates/chat/messenger.html:88
+msgid "Add room"
+msgstr ""
+
+#: templates/chat/messenger.html:92
+msgid "Members"
+msgstr ""
+
+#: templates/chat/messenger.html:94
+msgid "Leave the group"
+msgstr ""
+
+#: templates/chat/messenger.html:103
+msgid "Attach an image (JPG, PNG, GIF, WebP, max. 5 MiB)"
+msgstr ""
+
+#: templates/chat/messenger.html:105
+msgid "Attach an image"
+msgstr ""
+
+#: templates/chat/messenger.html:109
+msgid "Write a message…"
+msgstr ""
+
+#: templates/chat/messenger.html:110
+msgid "Send"
 msgstr ""
 
 #: templates/includes/lightbox.html:5
@@ -430,13 +775,17 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: templates/posts/wall.html:14
-msgid "Add a post to your wall"
+msgid "Send a message"
 msgstr ""
 
 #: templates/posts/wall.html:19
+msgid "Add a post to your wall"
+msgstr ""
+
+#: templates/posts/wall.html:24
 msgid "Wall"
 msgstr ""
 
-#: templates/posts/wall.html:20
+#: templates/posts/wall.html:25
 msgid "This wall is still empty."
 msgstr ""

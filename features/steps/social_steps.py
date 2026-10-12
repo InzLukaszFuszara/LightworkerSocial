@@ -1,6 +1,6 @@
 import datetime
 
-from behave import given, register_type, then, when
+from behave import given, then, when
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -12,14 +12,6 @@ from PIL import Image
 from posts.models import Category, Post, PostImage
 
 User = get_user_model()
-
-
-def _quoted(text):
-    return text
-
-
-_quoted.pattern = r'[^"]*'
-register_type(Q=_quoted)
 
 
 # --------------------------------------------------------------------------

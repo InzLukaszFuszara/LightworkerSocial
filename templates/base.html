@@ -4,10 +4,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token }}">
   <title>{% block title %}{% endblock %} · Lightworker Social</title>
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  {% if user.is_authenticated %}<link rel="stylesheet" href="{% static 'css/chat.css' %}">{% endif %}
 </head>
-<body>
+<body{% if user.is_authenticated %} class="has-chat"{% endif %}>
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="{% url 'posts:home' %}">✦ Lightworker Social</a>
@@ -54,6 +56,7 @@
   </footer>
 
   {% include "includes/lightbox.html" %}
+  {% if user.is_authenticated %}{% include "chat/messenger.html" %}{% endif %}
   <script src="{% static 'js/app.js' %}" defer></script>
 </body>
 </html>

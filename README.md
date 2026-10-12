@@ -27,6 +27,19 @@ with **BDD** tests (behave + behave-django) and **Polish** and **English** langu
   sorted newest first.
 - **Languages** – Polish (default) and English; a PL/EN switcher in the header. The language is also
   chosen automatically from the browser settings. Category names and descriptions are shared by all languages.
+- **Messenger** – a floating side panel on the right of the window (for logged in users):
+  - currently online users grouped by status (**Available**, **Be right back**); the status is set
+    in the panel and kept fresh by heartbeats, users disappear after logging out or going idle,
+  - **search by nick** – filters the online lists and finds all users to start a conversation,
+  - conversations open as **chat bubbles docked at the bottom** of the page (minimise / close,
+    unread badges, open bubbles are remembered between pages),
+  - messages of max. **250 characters**, plain text (**no Markdown**), with optional **images**
+    (JPG, PNG, GIF, WebP, max. **5 MiB**, converted to **WebP**, visible only to members),
+  - **group conversations**: the creator (owner) creates **rooms** shown as **tabs at the top** of the
+    group bubble, every group has its **own link** (`/chat/g/<token>/`) where users ask to join,
+    the owner **approves or rejects requests**, **adds members by nick**, **removes** members and
+    **mutes** them temporarily – a muted member sees a **countdown** until they can write again,
+  - implemented with a JSON API (`/chat/api/…`) and polling, so no extra services are needed.
 - **Colour scheme** in light blue and light green.
 
 ## Getting started
@@ -54,7 +67,7 @@ python manage.py behave                 # all scenarios
 python manage.py behave --tags=-browser # without the browser test
 ```
 
-The `features/lightbox.feature` scenario (`@browser`) checks the lightbox in a real browser
+Scenarios tagged `@browser` (`lightbox.feature`, `chat_browser.feature`) run in a real browser
 (Playwright + Chromium: `playwright install chromium` or the `CHROMIUM_PATH` variable).
 
 | File | Scope |
@@ -67,11 +80,16 @@ The `features/lightbox.feature` scenario (`@browser`) checks the lightbox in a r
 | `markdown.feature` | Markdown rendering and HTML sanitisation |
 | `i18n.feature` | Polish and English versions |
 | `lightbox.feature` | lightbox in the browser |
+| `chat_presence.feature` | online users by status, status changes, search by nick |
+| `chat_messages.feature` | direct messages, 250-character limit, no Markdown, images → WebP, 5 MiB limit, privacy |
+| `chat_groups.feature` | groups, links, join requests, adding / removing / muting members, rooms |
+| `chat_browser.feature` | side panel, bubbles at the bottom, room tabs, mute countdown in the browser |
 
 ## Translations
 
 ```bash
 python manage.py makemessages -l pl -l en --ignore=features
+python manage.py makemessages -d djangojs -l pl -l en --ignore=staticfiles
 python manage.py compilemessages
 ```
 
@@ -81,8 +99,9 @@ python manage.py compilemessages
 config/     settings and root URLs
 accounts/   user model (e-mail login), sign-up, profile, profile list
 posts/      categories, posts, images (WebP conversion), hashtags, Markdown, wall, forum
+chat/       messenger: presence, direct and group conversations, rooms, messages, join requests
 templates/  HTML templates
-static/     CSS (light blue / light green theme) and JS (lightbox, character counter)
+static/     CSS (light blue / light green theme) and JS (lightbox, character counter, messenger)
 locale/     translations (pl, en)
 features/   BDD tests
 ```

@@ -3,9 +3,19 @@
 import io
 import os
 
+from behave import register_type
 from bs4 import BeautifulSoup
 from django.core.files.uploadedfile import SimpleUploadedFile
 from PIL import Image
+
+
+def _quoted(text):
+    return text
+
+
+# {name:Q} matches the text between double quotes in a step.
+_quoted.pattern = r'[^"]*'
+register_type(Q=_quoted)
 
 CONTENT_TYPES = {
     "JPEG": "image/jpeg",

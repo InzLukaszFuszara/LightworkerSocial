@@ -16,9 +16,9 @@ ACCEPT_ATTR = "image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.w
 WEBP_QUALITY = 85
 
 
-def validate_image_upload(uploaded):
+def validate_image_upload(uploaded, max_bytes=None):
     """Raise ``ValidationError`` unless ``uploaded`` is a JPG/PNG/GIF/WebP <= 5 MiB."""
-    max_bytes = settings.POST_IMAGE_MAX_BYTES
+    max_bytes = max_bytes or settings.POST_IMAGE_MAX_BYTES
     if uploaded.size > max_bytes:
         raise ValidationError(
             _("File %(name)s is too large (%(size)s). The maximum size is %(max)s."),

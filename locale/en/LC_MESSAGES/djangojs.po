@@ -1,0 +1,129 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-12 15:54+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: static/js/chat.js:100
+#, javascript-format
+msgid "%s h"
+msgstr ""
+
+#: static/js/chat.js:100
+#, javascript-format
+msgid "%s min"
+msgstr ""
+
+#: static/js/chat.js:117
+msgid "Available"
+msgstr ""
+
+#: static/js/chat.js:118
+msgid "Be right back"
+msgstr ""
+
+#: static/js/chat.js:119
+msgid "Offline"
+msgstr ""
+
+#: static/js/chat.js:159
+msgid "Nobody here"
+msgstr ""
+
+#: static/js/chat.js:184
+msgid "No conversations yet"
+msgstr ""
+
+#: static/js/chat.js:229 static/js/chat.js:447
+msgid "No users found"
+msgstr ""
+
+#: static/js/chat.js:365
+msgid "Approve"
+msgstr ""
+
+#: static/js/chat.js:366
+msgid "Reject"
+msgstr ""
+
+#: static/js/chat.js:374
+msgid "No pending requests"
+msgstr ""
+
+#: static/js/chat.js:383
+msgid "Owner"
+msgstr ""
+
+#: static/js/chat.js:388 static/js/chat.js:389
+#, javascript-format
+msgid "Muted: %s left"
+msgstr ""
+
+#: static/js/chat.js:394
+msgid "Mute duration"
+msgstr ""
+
+#: static/js/chat.js:398
+msgid "Mute"
+msgstr ""
+
+#: static/js/chat.js:404
+msgid "Unmute"
+msgstr ""
+
+#: static/js/chat.js:408 static/js/chat.js:569
+msgid "Remove"
+msgstr ""
+
+#: static/js/chat.js:410
+#, javascript-format
+msgid "Remove %s from the group?"
+msgstr ""
+
+#: static/js/chat.js:436
+msgid "Add"
+msgstr ""
+
+#: static/js/chat.js:472
+msgid "Link copied"
+msgstr ""
+
+#: static/js/chat.js:479
+msgid "Do you want to leave this group?"
+msgstr ""
+
+#: static/js/chat.js:511
+msgid "Image"
+msgstr ""
+
+#: static/js/chat.js:546
+#, javascript-format
+msgid "You are muted. You can write again in %s."
+msgstr ""
+
+#: static/js/chat.js:564
+msgid "The image is larger than 5 MiB."
+msgstr ""
+
+#: static/js/chat.js:588
+#, javascript-format
+msgid "A message can have at most %s characters."
+msgstr ""
+
+#: static/js/chat.js:629
+msgid "You are no longer a member of this conversation."
+msgstr ""

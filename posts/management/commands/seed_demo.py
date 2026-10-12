@@ -8,6 +8,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management.base import BaseCommand
 from PIL import Image, ImageDraw
 
+from chat.models import Conversation, Membership, Message, Presence, Room
 from posts.models import Category, Post, PostImage
 
 CATEGORIES = [
@@ -66,4 +67,19 @@ class Command(BaseCommand):
             post.sync_hashtags()
             if i % 2 == 0:
                 PostImage.objects.create(post=post, image=_picture(i), position=0)
+        self._seed_chat(users)
         self.stdout.write(self.style.SUCCESS("Demo data created."))
+
+    def _seed_chat(self, users):
+        anna, bartek, celina = users
+        direct = Conversation.start_direct(anna, bartek)
+        Message.objects.create(room=direct.default_room, author=bartek, text="Cześć Anna! Jak medytacja?")
+        Message.objects.create(room=direct.default_room, author=anna, text="Świetnie, dziękuję 🙂")
+        group = Conversation.create_group(anna, "Krąg światła")
+        Membership.objects.get_or_create(conversation=group, user=bartek)
+        Membership.objects.get_or_create(conversation=group, user=celina)
+        Room.objects.create(conversation=group, name="Medytacje", created_by=anna)
+        Room.objects.create(conversation=group, name="Wydarzenia", created_by=anna)
+        Message.objects.create(room=group.default_room, author=celina, text="Witajcie w kręgu!")
+        Presence.touch(bartek, Presence.AVAILABLE)
+        Presence.touch(celina, Presence.AWAY)

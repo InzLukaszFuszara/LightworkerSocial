@@ -1,0 +1,26 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{{ conversation.name }}{% endblock %}
+{% block content %}
+<section class="card form-card narrow group-link" data-conversation="{{ conversation.pk }}">
+  <p class="muted">{% translate "Group conversation" %}</p>
+  <h1>{{ conversation.name }}</h1>
+  <p>
+    {% blocktranslate with owner=conversation.owner.display_name %}Created by {{ owner }}{% endblocktranslate %}
+    · {% blocktranslate count counter=member_count %}{{ counter }} member{% plural %}{{ counter }} members{% endblocktranslate %}
+  </p>
+  {% if membership %}
+    <p class="message">{% translate "You are a member of this group." %}</p>
+    <button type="button" class="btn" data-chat-open="{{ conversation.pk }}" data-chat-autoopen>{% translate "Open the conversation" %}</button>
+  {% elif join_request and join_request.status == "pending" %}
+    <p class="message">{% translate "Your request to join is waiting for the owner's approval." %}</p>
+  {% else %}
+    {% if join_request and join_request.status == "rejected" %}
+      <p class="message warning">{% translate "Your previous request was rejected. You can ask again." %}</p>
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn">{% translate "Ask to join" %}</button>
+    </form>
+  {% endif %}
+</section>
+{% endblock %}
